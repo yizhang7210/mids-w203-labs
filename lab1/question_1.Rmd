@@ -58,7 +58,7 @@ hist(df_clean$age)
 ## Most appropriate test 
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
 <!-- List every assumption that your test requires and evaluate it. -->
-We have large sample, i.i.d. data, age is a interval variable so we can do t-test.
+We have large sample, i.i.d. data, age is an interval variable so we can do t-test.
 Because people are not registered as Democrat and Republican at the same time, there
 doesn't seem to be a natural pairing going on. So we should do unpaired t-test.
 
@@ -75,7 +75,25 @@ t.test(df_clean$age ~ df_clean$party)
 
 We have very small p-value, we can reject the null and say the average ages are indeed different.
 
+```{r, warning=FALSE, message=FALSE}
+# Add categorical variable indicating Democratic or Republican
+df_clean <- mutate(df_clean, party_affiliation = ifelse(party == 1, "Democratic Party", "Republican Party"))
 
+# Find average age in each political party
+av_ages <- df_clean %>%
+  group_by(party_affiliation) %>%
+  summarize(av_age = mean(age))
 
-
-
+# Create density plot showing age distributions of the two parties
+df_clean %>%
+  ggplot() +
+  aes(x = age, color = party_affiliation) +
+  geom_density() + 
+  geom_vline(data = av_ages, aes(xintercept=av_age, 
+                                 color = party_affiliation),
+             linetype = "dashed") +
+  scale_color_manual(values = c("blue2", "red2")) + 
+  labs(title = "Distribution of ages across political parties",
+       caption = "The dotted lines represent the average age in each respective political party.") +
+  theme_minimal()
+```
