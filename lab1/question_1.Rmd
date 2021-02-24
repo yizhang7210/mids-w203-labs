@@ -19,22 +19,63 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201018 -- PRE: PARTY OF REGISTRATION
 # V201507x -- PRE: SUMMARY: RESPONDENT AGE
 df_small <- data.frame(party=df$V201018, age=df$V201507x)
+
+# Clean up the data
+df_clean <- df_small
+df_clean <- df_clean[df_clean$age > 0,] # Remove non-respondent for age
+df_clean <- df_clean[(df_clean$party == 1 | df_clean$party == 2),] # Only include D or R
 ```
 
 
 ## Importance and Context
 <!-- You can (and should delete each of these comments lines in your final report) --> 
 <!-- Explain why the reader should care about your research question. -->
+For this research question, we're interested in if Democratic voters are older or
+younger than Republican voters in 2020.
 
 ## Description of Data
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
+We're using the ANES 2020 Time Series Study. Looking through the CodeBook, it looks like
+the variables that are useful for this question are:
+- `V201018`: PARTY OF REGISTRATION
+- `V201507x`: SUMMARY: RESPONDENT AGE
+
+We removed the people who refused to answer the age question, and only left people who
+are registered as either Democratic or Republican for the test because we're not
+interested in other party affiliations.
+
+We should probably talk about the fact that the maximum is cut off at 80 in the survey.
+
+Looking at the summary of the data:
+``` {r}
+summary(df_clean)
+hist(df_clean$party)
+hist(df_clean$age)
+```
 
 ## Most appropriate test 
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
 <!-- List every assumption that your test requires and evaluate it. -->
+We have large sample, i.i.d. data, age is a interval variable so we can do t-test.
+Because people are not registered as Democrat and Republican at the same time, there
+doesn't seem to be a natural pairing going on. So we should do unpaired t-test.
 
 ## Test, results and interpretation
 <!-- What are the results of your test? --> 
-<!-- What do the results of this test mean? What is the practical significance? --> 
+<!-- What do the results of this test mean? What is the practical significance? -->
+
+Null hypothesis is the average age of Democrats and Republicans are the same.
+The alternative hypothesis is that they're not. So this should be a two tailed test.
+
+``` {r}
+t.test(df_clean$age ~ df_clean$party)
+```
+
+We have very small p-value, we can reject the null and say the average ages are indeed different.
+
+
+
+
+
