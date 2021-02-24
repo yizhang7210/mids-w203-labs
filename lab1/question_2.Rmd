@@ -1,6 +1,6 @@
 ---
-title: 'Lab 1: Question 1'
-author: "Your Names Here"
+title: 'Lab 1: Question 2'
+author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
 
@@ -11,7 +11,14 @@ library(ggplot2)
 ```
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
+# Load data
+df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 
+# Useful variables
+# V201018 -- PRE: PARTY OF REGISTRATION
+# V201151 -- PRE: FEELING THERMOMETER: JOE BIDEN, DEMOCRATIC PRESIDENTIAL CANDIDATE
+# V201153 -- PRE: FEELING THERMOMETER: KAMALA HARRIS, DEMOCRATIC VICE-PRESIDENTIAL CANDIDATE
+df_dem <- df[df$V201018 == 1,]
 ```
 
 

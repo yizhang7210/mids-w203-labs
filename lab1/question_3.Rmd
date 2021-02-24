@@ -1,6 +1,6 @@
 ---
-title: 'Lab 1: Question 1'
-author: "Your Names Here"
+title: 'Lab 1: Question 3'
+author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
 
@@ -11,7 +11,12 @@ library(ggplot2)
 ```
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
+# Load data
+df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 
+# Useful variables
+# V201145 -- PRE: APPROVE OR DISAPPROVE R’S GOVERNOR HANDLING COVID-19
+# V201624 -- PRE: ANYONE IN HOUSEHOLD TESTED POS FOR COVID-19
 ```
 
 

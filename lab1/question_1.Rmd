@@ -1,17 +1,24 @@
 ---
 title: 'Lab 1: Question 1'
-author: "Your Names Here"
+author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
 
 ```{r load packages, echo=TRUE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
-# library(tidyverse) # if you want more, but still core, toolkit
+library(tidyverse) # if you want more, but still core, toolkit
+library(haven)
 ```
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
+# Load data
+df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 
+# Pick out the useful variables
+# V201018 -- PRE: PARTY OF REGISTRATION
+# V201507x -- PRE: SUMMARY: RESPONDENT AGE
+df_small <- data.frame(party=df$V201018, age=df$V201507x)
 ```
 
 
