@@ -75,7 +75,7 @@ t.test(df_clean$age ~ df_clean$party)
 
 We have very small p-value, we can reject the null and say the average ages are indeed different.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
 # Add categorical variable indicating Democratic or Republican
 df_clean <- mutate(df_clean, party_affiliation = ifelse(party == 1, "Democratic Party", "Republican Party"))
 
