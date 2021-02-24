@@ -18,9 +18,11 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201018 -- PRE: PARTY OF REGISTRATION
 # V201151 -- PRE: FEELING THERMOMETER: JOE BIDEN, DEMOCRATIC PRESIDENTIAL CANDIDATE
 # V201153 -- PRE: FEELING THERMOMETER: KAMALA HARRIS, DEMOCRATIC VICE-PRESIDENTIAL CANDIDATE
-df_dem <- df[df$V201018 == 1,]
-```
+dem_df <- data.frame(party=df$V201018, Biden=df$V201151, Harris = df$V201153) %>% filter(party == 1)
 
+cat(" Biden : Mean - ", mean(dem_df[["Biden"]]), " sd - ", sd(dem_df[["Biden"]]), "\n")
+cat(" Harris : Mean - ", mean(dem_df[["Harris"]]), " sd - ", sd(dem_df[["Harris"]]), "\n")
+```
 
 ## Importance and Context
 <!-- You can (and should delete each of these comments lines in your final report) --> 
