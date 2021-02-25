@@ -129,7 +129,7 @@ between 18 and 50 than Republicans and vice versa for over 50.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 # Add categorical variable indicating Democratic or Republican
-df_clean <- mutate(df_clean, party_affiliation = ifelse(party == 1, "Democratic Party", "Republican Party"))
+df_clean <- mutate(df_clean, party_affiliation = ifelse(party == DEMOCRATS, "Democratic Party", "Republican Party"))
 
 # Find average age in each political party
 av_ages <- df_clean %>%
