@@ -91,9 +91,17 @@ party using the variable V201156.
 ```
 
 ## Most appropriate test 
-As the same person is expressing her/his feeling towards both the candidates, 
+As the same voter is expressing her/his feeling towards both the candidates, 
 the correct test for the near-normally distributed (need to explain) data in 
 non-ordinal value is paired t-test.
+
+The assumptions for paired t-test are
+• The dependent variable must be continuous.
+• The observations are independent of one another and identically distributed.
+• The dependent variable should be approximately normally distributed.
+• The dependent variable should not contain any outliers. (Need to discuss)
+
+
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
 <!-- List every assumption that your test requires and evaluate it. -->
 
