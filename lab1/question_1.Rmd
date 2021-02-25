@@ -20,16 +20,17 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201507x -- PRE: SUMMARY: RESPONDENT AGE
 df_small <- data.frame(party=df$V201018, age=df$V201507x)
 
+DEMOCRATS <- 1
+REPUBLICANS <- 2
+
 # Clean up the data
 df_clean <- df_small
 df_clean <- df_clean[df_clean$age > 0,] # Remove non-respondent for age
-df_clean <- df_clean[(df_clean$party == 1 | df_clean$party == 2),] # Only include D or R
+df_clean <- df_clean[(df_clean$party == DEMOCRATS | df_clean$party == REPUBLICANS),] # Only include D or R
 ```
 
 
 ## Importance and Context
-<!-- You can (and should delete each of these comments lines in your final report) --> 
-<!-- Explain why the reader should care about your research question. -->
 The 2020 general election was very different from the ones that came before.
 It happened in the middle of a pandemic. It elected the first ever female VP.
 And it might have been the most polarized election in recent American history.
@@ -46,43 +47,42 @@ out in this section, using the comprehensive 2020 Time Series Study from ANES
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
-Looking through the CodeBook, it looks like
-the variables that are useful for this question are:
-- `V201018`: PARTY OF REGISTRATION
-- `V201507x`: SUMMARY: RESPONDENT AGE
+From the ANES data set gathered before the election, there are 2 variables that
+are particularly relevant for us to answer this question, they are:
 
-We removed the people who refused to answer the age question, and only left people who
-are registered as either Democratic or Republican for the test because we're not
-interested in other party affiliations.
+- `V201018`: `PARTY OF REGISTRATION`
 
-We should probably talk about the fact that the maximum is cut off at 80 in the survey.
+- `V201507x`: `SUMMARY: RESPONDENT AGE`
 
-Looking at the summary of the data:
-``` {r}
+We noticed for both variables, there are irrelevant answers in the data set.
+For `PARTY OF REGISTRATION`, we'll only keep Democrats and Republicans, and remove
+other parties as well as other non-answers, because we're only interested in the
+supporters of these two parties.
+
+Similarly, for `SUMMARY: RESPONDENT AGE`, we will remove people who refused to answer.
+
+After these cleanup operations, we are left with only $3074$ observations to work with.
+
+Looking at their summaries, it looks like the variables are now all in the correct range.
+
+``` {r echo=FALSE}
 summary(df_clean)
-hist(df_clean$party)
-hist(df_clean$age)
 ```
 
-## Most appropriate test 
-<!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
-<!-- List every assumption that your test requires and evaluate it. -->
-We have large sample, i.i.d. data, age is an interval variable so we can do t-test.
-Because people are not registered as Democrat and Republican at the same time, there
-doesn't seem to be a natural pairing going on. So we should do unpaired t-test.
+From the following graphs, we can see that the number of Democrats and Republicans are not too disparate and the Age
+distribution is not very skewed.
 
-## Test, results and interpretation
-<!-- What are the results of your test? --> 
-<!-- What do the results of this test mean? What is the practical significance? -->
+Notice the age number has a hard cutoff at 80 due to the way the survey is constructed, so
+everyone above age 80 simply gets grouped into "80 or older" group, so actually the mean
+age is somewhat under-representing the true average age of the participants.
 
-Null hypothesis is the average age of Democrats and Republicans are the same.
-The alternative hypothesis is that they're not. So this should be a two tailed test.
-
-``` {r}
-t.test(df_clean$age ~ df_clean$party)
+``` {r echo=FALSE}
+par(mfrow=c(1, 2))
+pie(table(df_clean$party), main="Participants Party Afflication", labels=c('Democrats', 'Republicans'))
+hist(df_clean$age, main="Participants Age distribution", xlab = "age group", ylab = "Number of people")
 ```
 
-We have very small p-value, we can reject the null and say the average ages are indeed different.
+Furthermore, we can also take a look at the age distribution within each Party.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 # Add categorical variable indicating Democratic or Republican
@@ -106,3 +106,24 @@ df_clean %>%
        caption = "The dotted lines represent the average age in each respective political party.") +
   theme_minimal()
 ```
+
+
+## Most appropriate test 
+<!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
+<!-- List every assumption that your test requires and evaluate it. -->
+We have large sample, i.i.d. data, age is an interval variable so we can do t-test.
+Because people are not registered as Democrat and Republican at the same time, there
+doesn't seem to be a natural pairing going on. So we should do unpaired t-test.
+
+## Test, results and interpretation
+<!-- What are the results of your test? --> 
+<!-- What do the results of this test mean? What is the practical significance? -->
+
+Null hypothesis is the average age of Democrats and Republicans are the same.
+The alternative hypothesis is that they're not. So this should be a two tailed test.
+
+``` {r}
+t.test(df_clean$age ~ df_clean$party)
+```
+
+We have very small p-value, we can reject the null and say the average ages are indeed different.
