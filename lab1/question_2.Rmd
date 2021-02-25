@@ -7,7 +7,8 @@ output: pdf_document
 ```{r load packages, echo=TRUE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
-# library(tidyverse) # if you want more, but still core, toolkit
+library(tidyverse)
+library(haven)
 ```
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
@@ -38,11 +39,15 @@ cat(" Biden : Mean - ", mean(democraticDf[["Biden"]]), " sd - ", sd(democraticDf
 cat(" Harris : Mean - ", mean(democraticDf[["Harris"]]), " sd - ", sd(democraticDf[["Harris"]]), "\n")
 cat(" Democratic Party : Mean - ", mean(democraticDf[["DemSentiment"]]), " sd - ", sd(democraticDf[["DemSentiment"]]), "\n")
 democraticDf[order(democraticDf$DemSentiment),]
+
+
+hist(democraticDf$Biden, main="Voter Feeling distribution - Biden", xlab = "Feeling Score", ylab = "Number of people", col='blue')
+hist(democraticDf$Harris, main="Voter Feeling distribution - Harris", xlab = "Feeling Score", ylab = "Number of people",  col='red')
 ```
 
 ## Importance and Context
 The recent election result is path breaking.
-This historuc election gave us, 
+This historic election gave us, 
     The first female vice president
     The first Asian-American vice president.
     
@@ -86,9 +91,16 @@ party using the variable V201156.
 ```
 
 ## Most appropriate test 
+As the same person is expressing her/his feeling towards both the candidates, 
+the correct test for the near-normally distributed (need to explain) data in 
+non-ordinal value is paired t-test.
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
 <!-- List every assumption that your test requires and evaluate it. -->
 
+
 ## Test, results and interpretation
+```{r Test, echo=FALSE, warning=TRUE, message=FALSE}
+t.test(democraticDf$Harris, democraticDf$Biden, paired = TRUE)
+```
 <!-- What are the results of your test? --> 
 <!-- What do the results of this test mean? What is the practical significance? --> 
