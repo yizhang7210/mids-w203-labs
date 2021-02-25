@@ -30,14 +30,14 @@ democraticDf <- within(democraticDf, Harris[Harris > MaxSentimentScore] <- MaxSe
 democraticDf <- within(democraticDf, Biden[Biden > MaxSentimentScore] <- MaxSentimentScore)
 democraticDf <- within(democraticDf, Harris[Harris < MinSentimentScore] <- MinSentimentScore)
 democraticDf <- within(democraticDf, Biden[Biden < MinSentimentScore] <- MinSentimentScore)
-democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MaxSentimentScore] <- MaxSentimentScore)
-democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MinSentimentScore] <- MinSentimentScore)
+#democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MaxSentimentScore] <- MaxSentimentScore)
+#democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MinSentimentScore] <- MinSentimentScore)
 
-
+# Data Summary
 cat(" Biden : Mean - ", mean(democraticDf[["Biden"]]), " sd - ", sd(democraticDf[["Biden"]]), "\n")
 cat(" Harris : Mean - ", mean(democraticDf[["Harris"]]), " sd - ", sd(democraticDf[["Harris"]]), "\n")
 cat(" Democratic Party : Mean - ", mean(democraticDf[["DemSentiment"]]), " sd - ", sd(democraticDf[["DemSentiment"]]), "\n")
-
+democraticDf[order(democraticDf$DemSentiment),]
 ```
 
 ## Importance and Context
@@ -74,8 +74,8 @@ that operationalize the concepts in the research question to the best.
 The variable V201018 is used to distinguish the survey participants' party of 
 registration. The variable V201151 and V201153 measures the magnitude of the 
 participants propensity or feeling towards the Presidential Candidate and Vice-
-Presidential Candidate. Our team also verified the trueness of the participant 
-feeling to the Party, by cross checking the participant layalty to the Democratic
+Presidential Candidate. Our team also verified the credibility of the participant 
+feeling to the Party, by cross-checking the participant layalty to the Democratic
 party using the variable V201156.
 
 
