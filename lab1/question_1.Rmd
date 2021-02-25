@@ -4,7 +4,7 @@ author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
 
-```{r load packages, echo=TRUE, warning=FALSE, message=FALSE}
+```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
 library(tidyverse) # if you want more, but still core, toolkit
@@ -30,14 +30,23 @@ df_clean <- df_clean[(df_clean$party == 1 | df_clean$party == 2),] # Only includ
 ## Importance and Context
 <!-- You can (and should delete each of these comments lines in your final report) --> 
 <!-- Explain why the reader should care about your research question. -->
-For this research question, we're interested in if Democratic voters are older or
-younger than Republican voters in 2020.
+The 2020 general election was very different from the ones that came before.
+It happened in the middle of a pandemic. It elected the first ever female VP.
+And it might have been the most polarized election in recent American history.
+What drove people apart, among other things, is their age.
+
+Many people suspected that the Republicans have an older supporter base than the
+Democrats.
+
+Is it just a myth or does it have some truth to it? That is what we're going to find
+out in this section, using the comprehensive 2020 Time Series Study from ANES
+(American National Election Studies).
 
 ## Description of Data
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
-We're using the ANES 2020 Time Series Study. Looking through the CodeBook, it looks like
+Looking through the CodeBook, it looks like
 the variables that are useful for this question are:
 - `V201018`: PARTY OF REGISTRATION
 - `V201507x`: SUMMARY: RESPONDENT AGE
