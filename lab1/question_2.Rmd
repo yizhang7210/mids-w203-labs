@@ -18,7 +18,15 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201018 -- PRE: PARTY OF REGISTRATION
 # V201151 -- PRE: FEELING THERMOMETER: JOE BIDEN, DEMOCRATIC PRESIDENTIAL CANDIDATE
 # V201153 -- PRE: FEELING THERMOMETER: KAMALA HARRIS, DEMOCRATIC VICE-PRESIDENTIAL CANDIDATE
+highSentimentThreshold = 100
+lowSentimentThreshold = 0
+
 dem_df <- data.frame(party=df$V201018, Biden=df$V201151, Harris = df$V201153) %>% filter(party == 1)
+dem_df <- within(dem_df, Harris[Harris > 100] <- 100)
+dem_df <- within(dem_df, Biden[Biden > 100] <- 100)
+dem_df <- within(dem_df, Harris[Harris < 0] <- 0)
+dem_df <- within(dem_df, Biden[Biden < 0] <- 0)
+dem_df[order(dem_df$Biden),]
 
 cat(" Biden : Mean - ", mean(dem_df[["Biden"]]), " sd - ", sd(dem_df[["Biden"]]), "\n")
 cat(" Harris : Mean - ", mean(dem_df[["Harris"]]), " sd - ", sd(dem_df[["Harris"]]), "\n")
@@ -28,10 +36,17 @@ cat(" Harris : Mean - ", mean(dem_df[["Harris"]]), " sd - ", sd(dem_df[["Harris"
 <!-- You can (and should delete each of these comments lines in your final report) --> 
 <!-- Explain why the reader should care about your research question. -->
 
+
 ## Description of Data
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
+```{r desc, echo=FALSE, warning=TRUE, message=FALSE}
+summary(dem_df)
+unique(dem_df$Harris)
+hist(dem_df$Biden)
+hist(dem_df$Harris)
+```
 
 ## Most appropriate test 
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
