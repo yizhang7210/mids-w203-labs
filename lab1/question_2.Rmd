@@ -20,8 +20,9 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201153 -- PRE: FEELING THERMOMETER: KAMALA HARRIS, DEMOCRATIC VICE-PRESIDENTIAL CANDIDATE
 highSentimentThreshold = 100
 lowSentimentThreshold = 0
+DemocratPartyCode = 1
 
-dem_df <- data.frame(party=df$V201018, Biden=df$V201151, Harris = df$V201153) %>% filter(party == 1)
+dem_df <- data.frame(party=df$V201018, Biden=df$V201151, Harris = df$V201153) %>% filter(party == DemocratPartyCode)
 dem_df <- within(dem_df, Harris[Harris > highSentimentThreshold] <- highSentimentThreshold)
 dem_df <- within(dem_df, Biden[Biden > highSentimentThreshold] <- highSentimentThreshold)
 dem_df <- within(dem_df, Harris[Harris < lowSentimentThreshold] <- lowSentimentThreshold)
@@ -35,7 +36,16 @@ cat(" Harris : Mean - ", mean(dem_df[["Harris"]]), " sd - ", sd(dem_df[["Harris"
 ## Importance and Context
 <!-- You can (and should delete each of these comments lines in your final report) --> 
 <!-- Explain why the reader should care about your research question. -->
+The recent elction results are path breaking.
+It yielded, The first female vice president; The first Asian-American vice president. 
+The United States of America embarked on a new path. 
+A path made of equality. A path made of diversity. A path made of principles.
+I am fascinated to see the first of its kind combination - Biden and Harris.
+Like everyone, I see both of them have the substance and charisma to lead the nation.
 
+But, as a Data Scientist, I found it intriguing to explore the enthusiasm of democratic voters between them. 
+Thus, the hypothesis.
+Are Democratic voters more enthusiastic about Joe Biden or Kamala Harris.
 
 ## Description of Data
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
