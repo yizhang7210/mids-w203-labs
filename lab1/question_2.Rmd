@@ -22,16 +22,17 @@ MaxSentimentScore <- 100
 MinSentimentScore <- 0
 DemocratPartyCode <- 1
 
-democraticDf <- data.frame(party=rawData$V201018, Biden=rawData$V201151, Harris = rawData$V201153, 
+democraticDf <- data.frame(party=rawData$V201018, Biden=rawData$V201151, 
+                           Harris = rawData$V201153, 
                            DemSentiment = rawData$V201156) %>% 
-  filter(party == DemocratPartyCode)
+                filter(party == DemocratPartyCode)
 democraticDf <- within(democraticDf, Harris[Harris > MaxSentimentScore] <- MaxSentimentScore)
 democraticDf <- within(democraticDf, Biden[Biden > MaxSentimentScore] <- MaxSentimentScore)
 democraticDf <- within(democraticDf, Harris[Harris < MinSentimentScore] <- MinSentimentScore)
 democraticDf <- within(democraticDf, Biden[Biden < MinSentimentScore] <- MinSentimentScore)
 democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MaxSentimentScore] <- MaxSentimentScore)
 democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MinSentimentScore] <- MinSentimentScore)
-democraticDf[order(democraticDf$Biden),]
+
 
 cat(" Biden : Mean - ", mean(democraticDf[["Biden"]]), " sd - ", sd(democraticDf[["Biden"]]), "\n")
 cat(" Harris : Mean - ", mean(democraticDf[["Harris"]]), " sd - ", sd(democraticDf[["Harris"]]), "\n")
