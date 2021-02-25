@@ -31,21 +31,24 @@ df_clean <- df_clean[(df_clean$party == DEMOCRATS | df_clean$party == REPUBLICAN
 
 
 ## Importance and Context
-The 2020 general election was very different from the ones that came before.
-It happened in the middle of a pandemic. It elected the first ever female VP.
-And it might have been the most polarized election in recent American history.
-What drove people apart, among other things, is their age.
-
-Many people suspected that the Republicans have an older supporter base than the
-Democrats.
-
-Is it just a myth or does it have some truth to it? That is what we're going to find
-out in this section, using the comprehensive 2020 Time Series Study from ANES
-(American National Election Studies).
+Like many events in the year 2020, the 2020 United States general election was 
+unprecedented. Occurring in the midst of a global pandemic with political 
+polarization at an all time high and the most diverse candidate pool in United 
+States history, the 2020 election posed new challenges and opportunities for 
+American citizens and politicians. One key component that both major political 
+parties utilized was appealing to voters and encouraging voter turnout. In order 
+to appeal to the correct demographic base, it is helpful to understand who 
+comprises each political party. One distinguishing factor could be age. In this 
+report, we analyze the relative ages of voters registered as either Republican or 
+Democratic and we use comprehensive data from the American National Election 
+Studies (ANES) 2020 Time Series Study. Understanding age could help politicians
+target their campaigns to appropriate demographics and reach audiences with whom
+their messages will resonate.
 
 ## Description of Data
-From the ANES data set gathered before the election, there are 2 variables that
-are particularly relevant for us to answer this question, they are:
+The ANES data set contains information from 8,280 pre-election interviews with 
+U.S. citizens of voting age. Two variables are particularly relevant for us 
+to answer this question:
 
 - `V201018`: `PARTY OF REGISTRATION`
 
