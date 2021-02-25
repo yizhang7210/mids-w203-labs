@@ -22,10 +22,10 @@ highSentimentThreshold = 100
 lowSentimentThreshold = 0
 
 dem_df <- data.frame(party=df$V201018, Biden=df$V201151, Harris = df$V201153) %>% filter(party == 1)
-dem_df <- within(dem_df, Harris[Harris > 100] <- 100)
-dem_df <- within(dem_df, Biden[Biden > 100] <- 100)
-dem_df <- within(dem_df, Harris[Harris < 0] <- 0)
-dem_df <- within(dem_df, Biden[Biden < 0] <- 0)
+dem_df <- within(dem_df, Harris[Harris > highSentimentThreshold] <- highSentimentThreshold)
+dem_df <- within(dem_df, Biden[Biden > highSentimentThreshold] <- highSentimentThreshold)
+dem_df <- within(dem_df, Harris[Harris < lowSentimentThreshold] <- lowSentimentThreshold)
+dem_df <- within(dem_df, Biden[Biden < lowSentimentThreshold] <- lowSentimentThreshold)
 dem_df[order(dem_df$Biden),]
 
 cat(" Biden : Mean - ", mean(dem_df[["Biden"]]), " sd - ", sd(dem_df[["Biden"]]), "\n")
