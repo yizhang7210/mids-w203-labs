@@ -18,44 +18,65 @@ rawData <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 # V201018 -- PRE: PARTY OF REGISTRATION
 # V201151 -- PRE: FEELING THERMOMETER: JOE BIDEN, DEMOCRATIC PRESIDENTIAL CANDIDATE
 # V201153 -- PRE: FEELING THERMOMETER: KAMALA HARRIS, DEMOCRATIC VICE-PRESIDENTIAL CANDIDATE
-highSentimentThreshold = 100
-lowSentimentThreshold = 0
-DemocratPartyCode = 1
+MaxSentimentScore <- 100
+MinSentimentScore <- 0
+DemocratPartyCode <- 1
 
-democraticDf <- data.frame(party=rawData$V201018, Biden=rawData$V201151, Harris = rawData$V201153) %>% 
+democraticDf <- data.frame(party=rawData$V201018, Biden=rawData$V201151, Harris = rawData$V201153, 
+                           DemSentiment = rawData$V201156) %>% 
   filter(party == DemocratPartyCode)
-democraticDf <- within(democraticDf, Harris[Harris > highSentimentThreshold] <- highSentimentThreshold)
-democraticDf <- within(democraticDf, Biden[Biden > highSentimentThreshold] <- highSentimentThreshold)
-democraticDf <- within(democraticDf, Harris[Harris < lowSentimentThreshold] <- lowSentimentThreshold)
-democraticDf <- within(democraticDf, Biden[Biden < lowSentimentThreshold] <- lowSentimentThreshold)
+democraticDf <- within(democraticDf, Harris[Harris > MaxSentimentScore] <- MaxSentimentScore)
+democraticDf <- within(democraticDf, Biden[Biden > MaxSentimentScore] <- MaxSentimentScore)
+democraticDf <- within(democraticDf, Harris[Harris < MinSentimentScore] <- MinSentimentScore)
+democraticDf <- within(democraticDf, Biden[Biden < MinSentimentScore] <- MinSentimentScore)
+democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MaxSentimentScore] <- MaxSentimentScore)
+democraticDf <- within(democraticDf, DemSentiment[DemSentiment < MinSentimentScore] <- MinSentimentScore)
 democraticDf[order(democraticDf$Biden),]
 
 cat(" Biden : Mean - ", mean(democraticDf[["Biden"]]), " sd - ", sd(democraticDf[["Biden"]]), "\n")
 cat(" Harris : Mean - ", mean(democraticDf[["Harris"]]), " sd - ", sd(democraticDf[["Harris"]]), "\n")
-```
+cat(" Democratic Party : Mean - ", mean(democraticDf[["DemSentiment"]]), " sd - ", sd(democraticDf[["DemSentiment"]]), "\n")
 
-
-```
-
-rawData
 ```
 
 ## Importance and Context
-The recent election results are path breaking.
-It yielded, The first female vice president; The first Asian-American vice president. 
+The recent election result is path breaking.
+This historuc election gave us, 
+    The first female vice president
+    The first Asian-American vice president.
+    
 The United States of America embarked on a new path. 
 A path made of equality. A path made of diversity. A path made of principles.
 I am fascinated to see the first of its kind combination - Biden and Harris.
-Like everyone, I see both of them have the substance and charisma to lead the nation.
+Like everyone, I see both of them have the substance and charisma to lead the 
+nation.
 
-But, as a Data Scientist, I found it intriguing to explore the enthusiasm of democratic voters between them. 
-Thus, the hypothesis.
+But, as a Data Scientist, I found it intriguing to explore the enthusiasm of 
+democratic voters between them. Thus, the hypothesis.
+
 Are Democratic voters more enthusiastic about Joe Biden or Kamala Harris.
 
 ## Description of Data
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
-The American National Election Stuides (ANES) conducts surveys of voters in the United States, with a flagship survey occurring immediately before and after each presidential election. 
-Our research question is 
+The American National Election Studies (ANES) conducts surveys of voters in the 
+United States, with a flagship survey occurring immediately before and after 
+each presidential election. ANES survey fits well in our research question. The 
+variables tracked in the survey gives a multi-dimensional view about voters.
+After careful exploration, our team picked the four pre-election variables
+
+V201018 -- PARTY OF REGISTRATION
+V201151 -- FEELING THERMOMETER: JOE BIDEN, (D) PRESIDENTIAL CANDIDATE
+V201153 -- FEELING THERMOMETER: KAMALA HARRIS, (D) VICE-PRESIDENTIAL CANDIDATE
+V201156 -- FEELING THERMOMETER: DEMOCRATIC PARTY
+
+that operationalize the concepts in the research question to the best.
+The variable V201018 is used to distinguish the survey participants' party of 
+registration. The variable V201151 and V201153 measures the magnitude of the 
+participants propensity or feeling towards the Presidential Candidate and Vice-
+Presidential Candidate. Our team also verified the trueness of the participant 
+feeling to the Party, by cross checking the participant layalty to the Democratic
+party using the variable V201156.
+
 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
