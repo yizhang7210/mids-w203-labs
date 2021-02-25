@@ -44,9 +44,6 @@ out in this section, using the comprehensive 2020 Time Series Study from ANES
 (American National Election Studies).
 
 ## Description of Data
-<!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
-<!-- What are some basic features of the data distribution? --> 
-<!-- What changes do you make to the data and why? --> 
 From the ANES data set gathered before the election, there are 2 variables that
 are particularly relevant for us to answer this question, they are:
 
@@ -82,7 +79,50 @@ pie(table(df_clean$party), main="Participants Party Afflication", labels=c('Demo
 hist(df_clean$age, main="Participants Age distribution", xlab = "age group", ylab = "Number of people")
 ```
 
-Furthermore, we can also take a look at the age distribution within each Party.
+
+## Most appropriate test
+The unpaired t-test seems to be the most appropriate to answer this question.
+
+1. Even though there are only 3074 valid samples, it is still large enough for the CTE to apply
+on the sample average, so it satisfies the normality condition
+
+2. Given the sampling frame based on a cross-section of registered addresses across 50 states
+and the District of Columbia, we feel the data are sufficiently close to be i.i.d.
+
+3. And of course `age` is a metric scale variable.
+
+Furthermore, because we're comparing two distinct groups of people with no natural
+pairing between them, this directs us to the unpaired t-test.
+
+## Test, results and interpretation
+For the test itself, we establish the *null hypothesis* to be that the average age
+of Democrats and Republicans are the same.
+
+And *the alternative hypothesis* is that they're not.
+Given there is no bias towards either side, this should be a two tailed test.
+
+We'll be using the standard $5%$ significance level.
+
+``` {r}
+t.test(df_clean$age ~ df_clean$party)
+```
+
+From the test, it looks like we have a very very small p-value, representing a highly
+significant result.
+
+This gives us evidence to reject the null hypothesis in favor of the alternative and
+believe that the average age of the Democrats and the Republicans are indeed different,
+given the data and a 5% significance level.
+
+Practically, as can be seen above, the average age of a Republican is more than 3 years
+older than a Democrat.
+
+Plotting the distribution of ages within each group, it's clear that Democrats
+participants are more evenly distributed between "young" and "old" whereas Republicans
+are much more skewed towards people above 60.
+
+At the same time, there are larger proportion of Democrats in the entire age group
+between 18 and 50 than Republicans and vice versa for over 50.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 # Add categorical variable indicating Democratic or Republican
@@ -107,23 +147,11 @@ df_clean %>%
   theme_minimal()
 ```
 
-
-## Most appropriate test 
-<!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
-<!-- List every assumption that your test requires and evaluate it. -->
-We have large sample, i.i.d. data, age is an interval variable so we can do t-test.
-Because people are not registered as Democrat and Republican at the same time, there
-doesn't seem to be a natural pairing going on. So we should do unpaired t-test.
-
-## Test, results and interpretation
-<!-- What are the results of your test? --> 
-<!-- What do the results of this test mean? What is the practical significance? -->
-
-Null hypothesis is the average age of Democrats and Republicans are the same.
-The alternative hypothesis is that they're not. So this should be a two tailed test.
+More quantitatively, if we look at the correlation between the two groups, we see that
+there is a mild correlation, meaning that there is mildly strong (linear) relationship
+between the political party affiliation and age.
 
 ``` {r}
-t.test(df_clean$age ~ df_clean$party)
+cor(df_clean$party, df_clean$age)
 ```
 
-We have very small p-value, we can reject the null and say the average ages are indeed different.
