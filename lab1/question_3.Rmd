@@ -39,13 +39,12 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 
 
 ## Importance and Context
-<!-- You can (and should delete each of these comments lines in your final report) --> 
-<!-- Explain why the reader should care about your research question. -->
+The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.
 
 ## Description of Data
-<!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
-<!-- What are some basic features of the data distribution? --> 
-<!-- What changes do you make to the data and why? --> 
+The ANES data set contains information from 8,280 pre-election interviews with 
+U.S. citizens of voting age. Two variables are particularly relevant for us 
+to answer this question:
 
 - `V201145`: `APPROVE OR DISAPPROVE R’S GOVERNOR HANDLING COVID-19`
 
@@ -54,6 +53,7 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 ```{r}
 summary(df_clean)
 ```
+
 
 ```{r}
 pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
@@ -82,12 +82,26 @@ gov_count %>%
 ```
 
 
-# PACO START HERE PLEASE
-
 ## Most appropriate test 
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
 <!-- List every assumption that your test requires and evaluate it. -->
+Wilcoxon rank test
+
 
 ## Test, results and interpretation
 <!-- What are the results of your test? --> 
 <!-- What do the results of this test mean? What is the practical significance? --> 
+
+```{r}
+
+table(df_clean$gov, as.numeric(df_clean$gov))
+df_clean$covid_positive = df_clean$covid == pos_test
+summary(df_clean$covid_positive)
+
+wilcox.test(as.numeric(df_clean$gov)~df_clean$covid_positive)
+```
+
+
+```{r}
+cor.test(as.numeric(df_clean$gov), as.numeric(df_clean$covid_positive), method='spearman')
+```
