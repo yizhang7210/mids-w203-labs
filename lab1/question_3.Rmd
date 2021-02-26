@@ -6,10 +6,18 @@ output:
     toc: true
 ---
 
-```{r load packages, echo=TRUE, warning=FALSE, message=FALSE}
+```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
 # library(tidyverse) # if you want more, but still core, toolkit
+library(haven)
+
+library(tidyverse) 
+library(magrittr)
+library(knitr)
+library(patchwork)
+theme_set(theme_bw())
+options(tinytex.verbose = TRUE)
 ```
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
@@ -55,30 +63,47 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 summary(df_clean)
 ```
 
-```{r}
-pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
-hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
-```
 
+```{r, echo = FALSE, fig.cap='Voters\' Approval of Governor and Household COVID-19 Tests', fig.pos='!h'}
+df_clean_mod <- mutate(df_clean, gov_approval = ifelse(gov == gov_approve, "Approve", "Disapprove"))
+df_clean_mod <- mutate(df_clean_mod, positive_test = ifelse(covid == pos_test, "Positive Test", "No Positive Test"))
 
-```{r}
-table(df_clean$gov)
-```
-
-```{r}
-df_clean <- mutate(df_clean, gov_approval = ifelse(gov == gov_approve, "Approve", "Disapprove"))
-
-gov_count <- df_clean %>%
+gov_count <- df_clean_mod %>%
   group_by(gov_approval) %>%
   summarize(count=n())
 
-gov_count %>%
+pos_test_count <- df_clean_mod %>%
+  group_by(positive_test) %>%
+  summarize(count = n())
+
+gov_pie_chart <- gov_count %>%
   ggplot() +
   aes(x = "", y = count, fill = gov_approval) +
   geom_bar(stat = "identity", width = 1) +
   coord_polar("y", start = 0) +
-  labs(fill = "Approve or Disapprove of \nGovernor's Response") +
+  labs(fill = "Approve or Disapprove of \nGovernor's Response",
+       title = "Distribution of Approval of\nGovernor's COVID-19 Handling") +
   theme_void()
+
+covid_pie_chart <- pos_test_count %>%
+  ggplot() +
+  aes(x = "", y = count, fill = positive_test) + 
+  geom_bar(stat = "identity", width = 1) + 
+  coord_polar("y", start = 0) +
+  labs(fill = "COVID-19 Case in Household",
+       title = "Distribution of Households\nwith Positive COVID-19 Tests") +
+  theme_void()
+
+(gov_pie_chart) | (covid_pie_chart)
+```
+
+
+```{r, echo = FALSE, fig.pos = '!h'}
+summary_table <- prop.table(table(df_clean_mod %>% select(3, 4)))
+kable(summary_table,
+      digits = 3,
+      caption = "Cross Tab of Governor Approval and Positive COVID-19 Tests",
+      booktabs = TRUE)
 ```
 
 
