@@ -1,7 +1,9 @@
 ---
-title: 'Lab 1: Question 3'
+title: 'Lab 1 Question 3: Are survey respondents who have had someone in their home infected by COVID-19 more likely to disapprove of the way their governor is handling the pandemic?'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
-output: pdf_document
+output: 
+  bookdown::pdf_document2: 
+    toc: true
 ---
 
 ```{r load packages, echo=TRUE, warning=FALSE, message=FALSE}
@@ -16,7 +18,23 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 
 # Useful variables
 # V201145 -- PRE: APPROVE OR DISAPPROVE R’S GOVERNOR HANDLING COVID-19
+  # 1 = approve, 2 = disapprove
+gov_approve = 1
+gov_disapprove = 2
 # V201624 -- PRE: ANYONE IN HOUSEHOLD TESTED POS FOR COVID-19
+  # 1 = someone tested positive, 2 = no one tested positive 
+pos_test = 1
+no_pos_test = 2
+# Less useful but still interesting
+# V201146 -- PRE: HOW MUCH APPROVE/DISAPPROVE R’S GOVERNOR HANDLING COVID-19
+# V201625 -- PRE: ANYONE IN HOUSEHOLD COVID-19 BASED ON SYMPTOMS
+
+df_small <- data.frame(gov=df$V201145, covid=df$V201624)
+
+df_clean <- df_small
+df_clean <- df_clean[df_clean$covid > 0,] # remove interview breakoff/refused
+df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
+
 ```
 
 
@@ -28,6 +46,43 @@ df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
 <!-- Explain how your research question is operationalized, including whether the variables you create are appropriate to study the concepts in question. --> 
 <!-- What are some basic features of the data distribution? --> 
 <!-- What changes do you make to the data and why? --> 
+
+- `V201145`: `APPROVE OR DISAPPROVE R’S GOVERNOR HANDLING COVID-19`
+
+- `V201624`: `ANYONE IN HOUSEHOLD TESTED POS FOR COVID-19`
+
+```{r}
+summary(df_clean)
+```
+
+```{r}
+pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
+hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
+```
+
+
+```{r}
+table(df_clean$gov)
+```
+
+```{r}
+df_clean <- mutate(df_clean, gov_approval = ifelse(gov == gov_approve, "Approve", "Disapprove"))
+
+gov_count <- df_clean %>%
+  group_by(gov_approval) %>%
+  summarize(count=n())
+
+gov_count %>%
+  ggplot() +
+  aes(x = "", y = count, fill = gov_approval) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(fill = "Approve or Disapprove of \nGovernor's Response") +
+  theme_void()
+```
+
+
+# PACO START HERE PLEASE
 
 ## Most appropriate test 
 <!-- Explain which test is the most appropriate to answer your question and why it is the most appropriate --> 
