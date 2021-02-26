@@ -1,8 +1,12 @@
 ---
-title: 'Lab 1: Question 1'
+title: 'Lab 1 Question 1: Are Democratic Voters Older or Younger Than Republican Voters in 2020?'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
-output: pdf_document
+output: 
+  bookdown::pdf_document2: 
+    toc: true
 ---
+
+\clearpage
 
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -54,80 +58,77 @@ to answer this question:
 
 - `V201507x`: `SUMMARY: RESPONDENT AGE`
 
-We noticed for both variables, there are irrelevant answers in the data set.
-For `PARTY OF REGISTRATION`, we'll only keep Democrats and Republicans, and remove
-other parties as well as other non-answers, because we're only interested in the
-supporters of these two parties.
+We noticed that each variable takes on both relevant and irrelevant values for 
+our study.
+For `PARTY OF REGISTRATION`, we are only interested in registered Democrats and 
+Republicans, so we remove
+other parties as well as other non-answers, i.e. "inapplicable," "don't know," and
+"refused" to respond.
 
 Similarly, for `SUMMARY: RESPONDENT AGE`, we will remove people who refused to answer.
 
 After these cleanup operations, we are left with only $3074$ observations to work with.
 
-Looking at their summaries, it looks like the variables are now all in the correct range.
+Looking at summaries for each variable, the variables are now all in the correct range.
 
 ``` {r echo=FALSE}
 summary(df_clean)
 ```
 
-From the following graphs, we can see that the number of Democrats and Republicans are not too disparate and the Age
-distribution is not very skewed.
+From the following graphs, we can see that the ANES data indicates a larger number of Democrats than Republicans, and the age distribution is not very skewed.
 
-Notice the age number has a hard cutoff at 80 due to the way the survey is constructed, so
-everyone above age 80 simply gets grouped into "80 or older" group, so actually the mean
-age is somewhat under-representing the true average age of the participants.
+We also note that ANES cuts off the values for age at 80, so
+everyone above age 80 is grouped into the "80 or older" group. This means the average
+age shown in the ANES data will underestimate the true average age of the participants.
 
-``` {r echo=FALSE}
+``` {r echo=FALSE, fig.cap="Distributions of party affiliation and age within the ANES data set", fig.pos='!b'}
 par(mfrow=c(1, 2))
-pie(table(df_clean$party), main="Participants Party Afflication", labels=c('Democrats', 'Republicans'))
-hist(df_clean$age, main="Participants Age distribution", xlab = "age group", ylab = "Number of people")
+pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
+hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
 ```
 
 
 ## Most appropriate test
-The unpaired t-test seems to be the most appropriate to answer this question.
+The unpaired two-sample t-test seems to be the most appropriate to answer this question.
+We are comparing two distinct groups of people with no natural pairing between them.
+This directs us to an unpaired t-test, and we evaluate the validity of the two-sample
+unpaired t-test:
 
-1. Even though there are only 3074 valid samples, it is still large enough for the CTE to apply
-on the sample average, so it satisfies the normality condition
+1. Although the age data does not quite follow a normal distribution as shown in the histogram above, the data set is large enough with 3,074 valid observations for the Central Limit Theorem to apply.
+Therefore, this data satisfies the normality assumption of the unpaired t-test.
 
 2. Given the sampling frame based on a cross-section of registered addresses across 50 states
 and the District of Columbia, we feel the data are sufficiently close to be i.i.d.
 
-3. And of course `age` is a metric scale variable.
-
-Furthermore, because we're comparing two distinct groups of people with no natural
-pairing between them, this directs us to the unpaired t-test.
+3. `SUMMARY: RESPONDENT AGE` is a metric scale variable.
 
 ## Test, results and interpretation
 For the test itself, we establish the *null hypothesis* to be that the average age
-of Democrats and Republicans are the same.
+of Democrats ($\mu_D$) and average age of Republicans ($\mu_R$) are the same. And *the alternative hypothesis* is that they're not.
+Given we have no strong initial inclination in either direction, this should be a two tailed test.
 
-And *the alternative hypothesis* is that they're not.
-Given there is no bias towards either side, this should be a two tailed test.
+We'll be using the standard $5\%$ significance level.
 
-We'll be using the standard $5%$ significance level.
+$H_0: \mu_D=\mu_R \hspace{4 cm} H_a: \mu_D \neq \mu_R \hspace{4 cm} \alpha=0.05$
 
 ``` {r}
 t.test(df_clean$age ~ df_clean$party)
 ```
 
-From the test, it looks like we have a very very small p-value, representing a highly
-significant result.
-
+From the test, it looks like we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result. 
 This gives us evidence to reject the null hypothesis in favor of the alternative and
 believe that the average age of the Democrats and the Republicans are indeed different,
 given the data and a 5% significance level.
 
 Practically, as can be seen above, the average age of a Republican is more than 3 years
-older than a Democrat.
+older than a Democrat. 
+Plotting the distribution of ages within each group, we observe that Democratic
+participants are more evenly distributed between "young" and "old" whereas Republicans are much more skewed towards people above 60. At the same time, there are larger proportion of Democrats in the entire age group between 18 and 50 than Republicans and vice versa for over 50.
+Knowing this information could help inform the Democratic and Republican parties target
+their political campaigns. 
+For instance, because Republican registered voters are likely to be older than Democratic registered voters, the Republican Party could implement new strategies encouraging older citizens to vote in hopes of increasing their chance at winning the election.
 
-Plotting the distribution of ages within each group, it's clear that Democrats
-participants are more evenly distributed between "young" and "old" whereas Republicans
-are much more skewed towards people above 60.
-
-At the same time, there are larger proportion of Democrats in the entire age group
-between 18 and 50 than Republicans and vice versa for over 50.
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="The distribution of age differs for each political party we analyze. The dotted lines represent the average age in each respective political party.", fig.pos='!b'}
 # Add categorical variable indicating Democratic or Republican
 df_clean <- mutate(df_clean, party_affiliation = ifelse(party == DEMOCRATS, "Democratic Party", "Republican Party"))
 
@@ -145,8 +146,7 @@ df_clean %>%
                                  color = party_affiliation),
              linetype = "dashed") +
   scale_color_manual(values = c("blue2", "red2")) + 
-  labs(title = "Distribution of ages across political parties",
-       caption = "The dotted lines represent the average age in each respective political party.") +
+  labs(title = "Distribution of ages across political parties") +
   theme_minimal()
 ```
 
