@@ -131,26 +131,27 @@ t.test(democraticDf$Harris, democraticDf$Biden, paired = TRUE)
 ```
 
 From the test, we can see that the p-value is $0.0743$, which is greater than the
-significance level of $0.05$, representing a non-significant result.
+significance level of $\alpha = 0.05$, therefore we failed to reject the null hypothesis.
 
-This means that we failed to reject the null hypothesis, i.e. we do not have
-sufficient evidence to believe Democrat voter's level of support for Biden and Harris
-are different given the data and a 5% significance level.
+However given the p-value is fairly close to $0.05$, it could be considered as a
+marginally significant result. Even though we do not have sufficiently strong evidence to
+believe Democrat voter's level of support for Biden and Harris are different given the data
+at a $5%$ significance level, there does seem to be some level of disparity.
 
 On a practical level, we can see that the mean of the differences is fairly small ($0.71$),
 less than 1 point on the $0-100$ scale.
 
 Furthermore, if we plot the difference across the board, we can see that vast majority
 of Democrat voters' feeling score for Biden and Harris are within 5 points of each other,
-so the effect size is indeed very small.
+so the effect size is indeed small.
 
 ``` {r echo=FALSE}
-feeling_diffs = democraticDf$Biden - democraticDf$Harris
+feeling_diffs = abs(democraticDf$Biden - democraticDf$Harris)
 percentage_equal <- length(feeling_diffs[feeling_diffs == 0]) / length(feeling_diffs)
-percentage_within_10 <- length(feeling_diffs[abs(feeling_diffs) <= 10]) / length(feeling_diffs)
+percentage_within_20 <- length(feeling_diffs[feeling_diffs <= 20]) / length(feeling_diffs)
 
-paste(round(percentage_equal, 2), "% of Democratic voters gave Biden and Harris the same score.")
-paste(round(percentage_within_10, 2), "% of Democratic voters gave Biden and Harris scores within 10 points.")
+paste(100 * round(percentage_equal, 4), "% of Democratic voters gave Biden and Harris the same score.")
+paste(100 * round(percentage_within_20, 4), "% of Democratic voters gave Biden and Harris scores within 20 points.")
 
 ```
 
@@ -159,7 +160,7 @@ Although curiously, there are a few people who gave Biden and Harris very differ
 feeling scores, as much as 100!
 
 ``` {r fig, fig.height = 4, fig.width = 5, fig.align = "center", echo=FALSE }
-hist(democraticDf$Harris - democraticDf$Biden, breaks=20, main="Voter Feelings - Difference", xlab = "Difference in Feeling Score", ylab = "Number of people")
+hist(feeling_diffs, breaks=20, main="Voter Feelings - Difference", xlab = "Difference in Feeling Score", ylab = "Number of people")
 ```
 
 
