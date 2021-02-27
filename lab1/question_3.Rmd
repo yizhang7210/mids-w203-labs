@@ -128,8 +128,6 @@ Given we have no strong initial inclination in either direction, this should be 
 We'll be using the standard $5\%$ significance level.
 
 ``` {r echo=FALSE}
-df_clean$covid_positive <- df_clean$covid == pos_test
-df_clean$gov_approve <- df_clean$gov == gov_approve
 df_clean$approval <- recode(as.character(df_clean$gov), '1' = 'Approve', '2' = 'Disapprove')
 df_clean$covid_tested <- recode(as.character(df_clean$covid), '1' = 'Positive', '2' = 'Not positive')
 ```
@@ -137,7 +135,7 @@ df_clean$covid_tested <- recode(as.character(df_clean$covid), '1' = 'Positive', 
 First take a look at the table in each of the 4 cases for context, then run the test.
 ```{r}
 table(df_clean$approval, df_clean$covid_tested)
-wilcox.test(as.numeric(df_clean$gov)~df_clean$covid_positive)
+wilcox.test(df_clean$gov ~ df_clean$covid)
 ```
 
 From the test we can see that the p-value is $0.0377$, which is less than the significance
