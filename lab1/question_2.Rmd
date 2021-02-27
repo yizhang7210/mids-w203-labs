@@ -134,9 +134,11 @@ From the test, we can see that the p-value is $0.0743$, which is greater than th
 significance level of $\alpha = 0.05$, therefore we failed to reject the null hypothesis.
 
 However given the p-value is fairly close to $0.05$, it could be considered as a
-marginally significant result. Even though we do not have sufficiently strong evidence to
+marginally statistically significant result for the two tailed test. Even though we do not have sufficiently strong evidence to
 believe Democrat voter's level of support for Biden and Harris are different given the data
 at a $5%$ significance level, there does seem to be some level of disparity.
+
+In addition, a 95% confidence interval for the difference of voter feelings' mean between Biden and Harris $\mu_B-\mu_H$ is (-1.4904, 0.0698). Meaning out of all confidence intervals constructed, 95% of the time the interval will contain the true mean.
 
 On a practical level, we can see that the mean of the differences is fairly small ($0.71$),
 less than 1 point on the $0-100$ scale.

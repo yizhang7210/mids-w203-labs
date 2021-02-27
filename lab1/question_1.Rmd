@@ -45,7 +45,7 @@ to appeal to the correct demographic base, it is helpful to understand who
 comprises each political party. One distinguishing factor could be age. In this 
 report, we analyze the relative ages of voters registered as either Republican or 
 Democratic, and we use comprehensive data from the American National Election 
-Studies (ANES) 2020 Time Series Study. Understanding age could help politicians
+Studies (ANES) 2020 Time Series Study. Understanding age distributions could help politicians
 target their campaigns to appropriate demographics and reach audiences with whom
 their messages will resonate.
 
@@ -61,7 +61,7 @@ to answer this question:
 We noticed that each variable takes on both relevant and irrelevant values for 
 our study.
 For `PARTY OF REGISTRATION`, we are only interested in registered Democrats and 
-Republicans, so we remove
+Republicans, so we remove non or independent,
 other parties as well as other non-answers, i.e. "inapplicable," "don't know," and
 "refused" to respond.
 
@@ -90,7 +90,7 @@ hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", yla
 The unpaired two-sample t-test is the most appropriate to answer this question.
 We are comparing a quantitative, interval variable for two distinct groups of people with no natural pairing between them.
 This directs us to an unpaired t-test, and we evaluate the validity of the two-sample
-unpaired t-test:
+unpaired t-test which requires the following assumptions to be true:
 
 1. Although the age data does not quite follow a normal distribution as shown in the histogram above, the data set is large enough with 3,074 valid observations for the Central Limit Theorem to apply.
 Therefore, this data satisfies the normality assumption of the unpaired t-test.
@@ -113,18 +113,18 @@ $H_0: \mu_D=\mu_R \hspace{4 cm} H_a: \mu_D \neq \mu_R \hspace{4 cm} \alpha=0.05$
 t.test(df_clean$age ~ df_clean$party)
 ```
 
-From the test, we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result. 
+From the test, we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result.
 This gives us evidence to reject the null hypothesis in favor of the alternative and
 believe that the average age of the Democrats and the Republicans are indeed different,
-given the data and a 5% significance level.
+given the data and a 5% significance level. In addition, a 95% confidence interval for the difference of mean between Democrats and Republicans $\mu_D-\mu_R$ is (-4.5312, -2.0965). Meaning out of all confidence intervals constructed, 95% of the time the interval will contain the true mean.
 
 Practically, as can be seen in Figure 2, the average age of a Republican is more than 3 years
-older than a Democrat. 
+older than a Democrat.
 Plotting the distribution of ages within each group, we observe that Democratic
 participants are more evenly distributed between "young" and "old" whereas Republicans are much more skewed towards people above 60. At the same time, there are larger proportion of Democrats in the entire age group between 18 and 50 than Republicans and vice versa for over 50.
 Knowing this information could help the Democratic and Republican parties target
 their political campaigns. 
-For instance, because Republican registered voters are likely to be older than Democratic registered voters, the Republican Party could implement new strategies encouraging older citizens to vote in hopes of increasing their chance at winning the election.
+For instance, because Republican registered voters are likely to be older than Democratic registered voters, the Republican Party could implement new strategies encouraging older citizens to vote in hopes of increasing their chance at winning the election. Conversely, the Democratic Party could leverage online campaign or social media to increase turnout rate for younger voters.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="The distribution of age differs for each political party we analyze. The dotted lines represent the average age in each respective political party. Average age of Democrats surveyed is 52.5. Average age of Republicans surveyed is 55.9.", fig.pos='!h', out.extra=''}
 # Add categorical variable indicating Democratic or Republican
