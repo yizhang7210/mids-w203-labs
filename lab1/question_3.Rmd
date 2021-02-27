@@ -115,17 +115,38 @@ Wilcoxon rank test
 ## Test, results and interpretation
 <!-- What are the results of your test? --> 
 <!-- What do the results of this test mean? What is the practical significance? --> 
+We establish the *null hypothesis* to be that the average support for the respondent's
+governor is the same among people that had a member of the household test positive for COVID-19 and those who did not. 
+Given we have no strong initial inclination in either direction, this should be a two tailed test.
+
+We'll be using the standard $5\%$ significance level.
+
 
 ```{r}
+df_clean$covid_positive =  df_clean$covid == pos_test
+df_clean$gov_approve = df_clean$gov == gov_approve
+df_clean$approval <- recode(as.character(df_clean$gov), '1' = 'Approve', '2' = 'Disapprove')
+df_clean$covid_tested <- recode(as.character(df_clean$covid), '1' = 'Positive', '2' = 'Not positive')
+df_table <- table(df_clean$approval, df_clean$covid_tested)
 
-table(df_clean$gov, as.numeric(df_clean$gov))
-df_clean$covid_positive = df_clean$covid == pos_test
-summary(df_clean$covid_positive)
+
+table(df_clean$approval, df_clean$covid_tested)
+
 
 wilcox.test(as.numeric(df_clean$gov)~df_clean$covid_positive)
+
+
+chisq.test(table(df_clean$approval, df_clean$covid_tested))
 ```
+
+
+We reject the null since the p-value is lower than our significance level $5\%$
 
 
 ```{r}
 cor.test(as.numeric(df_clean$gov), as.numeric(df_clean$covid_positive), method='spearman')
 ```
+
+Although, it's more likely to approve the performance of the governor if there is no positive covid test on the members of the household, the significance is very low with a Sperman's correlation value of `0.023`.
+
+
