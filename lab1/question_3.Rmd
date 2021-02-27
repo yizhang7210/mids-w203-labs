@@ -127,8 +127,6 @@ df_clean$covid_positive =  df_clean$covid == pos_test
 df_clean$gov_approve = df_clean$gov == gov_approve
 df_clean$approval <- recode(as.character(df_clean$gov), '1' = 'Approve', '2' = 'Disapprove')
 df_clean$covid_tested <- recode(as.character(df_clean$covid), '1' = 'Positive', '2' = 'Not positive')
-df_table <- table(df_clean$approval, df_clean$covid_tested)
-
 
 table(df_clean$approval, df_clean$covid_tested)
 
