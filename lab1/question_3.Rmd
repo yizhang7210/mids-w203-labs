@@ -9,7 +9,7 @@ output:
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
-# library(tidyverse) # if you want more, but still core, toolkit
+library(ggcorrplot)
 library(haven)
 
 library(tidyverse) 
@@ -145,8 +145,9 @@ opinion of their Governor than people without.
 
 Practically we can calculate the correlation between the two variables:
 
-```{r}
-cor(df_clean$gov, df_clean$covid)
+```{r echo=FALSE, fig.cap='Correlation Table for Voters\' Approval of Governor and Household COVID-19 Tests', fig.pos='!h'}
+r <- cor(data.frame('Approve' = as.numeric(df_clean_mod$gov==1), 'Disapprove' = as.numeric(df_clean_mod$gov==2), 'Positive' = as.numeric(df_clean_mod$covid==1), 'Not_Positive' = as.numeric(df_clean_mod$covid==2)))
+ggcorrplot(r[3:4,1:2], lab = TRUE, ggtheme = ggplot2::theme_dark(), digits = 3)
 ```
 
 Given the numerical encoding, this means that having a positive test in the household
