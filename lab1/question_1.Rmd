@@ -43,9 +43,9 @@ American citizens and politicians. One key component that both major political
 parties utilized was appealing to voters and encouraging voter turnout. In order 
 to appeal to the correct demographic base, it is helpful to understand who 
 comprises each political party. One distinguishing factor could be age. In this 
-report, we analyze the relative ages of voters registered as either Republican or 
-Democratic, and we use comprehensive data from the American National Election 
-Studies (ANES) 2020 Time Series Study. Understanding age distributions could help politicians
+report, we use comprehensive data from the American National Election Studies 
+(ANES) 2020 Time Series Study to analyze the relative ages of voters registered as either Republican or Democratic using an unpaired two-sample t-test. 
+Understanding age distributions could help politicians
 target their campaigns to appropriate demographics and reach audiences with whom
 their messages will resonate.
 
@@ -79,7 +79,7 @@ From Figure 1, we can see that the ANES data contains a larger number of Democra
 This means the average age shown in the ANES data will underestimate the true 
 average age of the participants.
 
-``` {r echo=FALSE, fig.cap="Distributions of party affiliation and age within the ANES data set", fig.pos='!h', out.extra=''}
+``` {r echo=FALSE, fig.cap="Distributions of party affiliation and age within the ANES data set", fig.pos='!h', out.extra='', out.width = "75%", fig.align="center"}
 par(mfrow=c(1, 2))
 pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
 hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
@@ -116,7 +116,7 @@ t.test(df_clean$age ~ df_clean$party)
 From the test, we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result.
 This gives us evidence to reject the null hypothesis in favor of the alternative and
 believe that the average age of the Democrats and the Republicans are indeed different,
-given the data and a 5% significance level. In addition, a 95% confidence interval for the difference of mean between Democrats and Republicans $\mu_D-\mu_R$ is (-4.5312, -2.0965). Meaning out of all confidence intervals constructed, 95% of the time the interval will contain the true mean.
+given the data and a 5% significance level. In addition, a 95% confidence interval for the difference of mean between Democrats and Republicans $\mu_D-\mu_R$ is (-4.5312, -2.0965). Meaning we are 95% confident that the true difference lies in this range.
 
 Practically, as can be seen in Figure 2, the average age of a Republican is more than 3 years
 older than a Democrat.
@@ -126,7 +126,7 @@ Knowing this information could help the Democratic and Republican parties target
 their political campaigns. 
 For instance, because Republican registered voters are likely to be older than Democratic registered voters, the Republican Party could implement new strategies encouraging older citizens to vote in hopes of increasing their chance at winning the election. Conversely, the Democratic Party could leverage online campaign or social media to increase turnout rate for younger voters.
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="The distribution of age differs for each political party we analyze. The dotted lines represent the average age in each respective political party. Average age of Democrats surveyed is 52.5. Average age of Republicans surveyed is 55.9.", fig.pos='!h', out.extra=''}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="The distribution of age differs for each political party we analyze. The dotted lines represent the average age in each respective political party. Average age of Democrats surveyed is 52.5. Average age of Republicans surveyed is 55.9.", fig.pos='!h', out.extra='', out.width = "75%", fig.align="center"}
 # Add categorical variable indicating Democratic or Republican
 df_clean <- mutate(df_clean, party_affiliation = ifelse(party == DEMOCRATS, "Democratic Party", "Republican Party"))
 
