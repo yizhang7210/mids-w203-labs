@@ -48,7 +48,23 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 
 
 # Importance and Context
-The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.
+The COVID-19 pandemic has caused significant upheaval in the lives
+of U.S. citizens. The pandemic has also become highly politicized, with each political
+party criticizing the other for its response (or lack thereof) to the pandemic,
+including stay at home orders, closures of local businesses, and the encouragement
+of masks and social distancing.
+Simultaneously, U.S. citizens have been forming their own opinions about local
+and federal responses, and in this report we analyze if citizens' opinions of 
+their elected governors differ depending on whether or not someone in their household
+has tested positive for COVID-19. Knowing this information prior to the 2020 election
+can help state governments and political parties understand the opinions of 
+their constituents, which could influence their campaign strategies. To test if
+the approval rate of governors is different between households that have tested
+positive for COVID-19 versus those that have not, we utilize comprehensive data 
+from the American National Election Studies (ANES) 2020 Time Series Study and a 
+Wilcoxon rank sum test.
+
+<!--The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.-->
 
 # Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
@@ -59,10 +75,36 @@ to answer this question:
 
 - `V201624`: `ANYONE IN HOUSEHOLD TESTED POS FOR COVID-19`
 
+Both variables are binary variables. In `V201145`, governor approval is 
+represented by the value 1, while disapproval is represented by the number 2. We
+remove the remaining irrelevant values, including those for refusal to answer and
+interviewees whose responses got cut off. The breakoff of a survey response 
+could happen for a variety of reasons, including lack of Internet or phone service.
+
+For `V201624`, the value 1 is assigned if there has been a positive
+COVID-19 test in the respondent's household; the value 2 is assigned if there has
+been no positive COVID-19 test in the respondent's household. We remove the 
+irrelevant values corresponding to those who refused to answer.
+
+After cleaning the data, we are left with 8,138 valid observations. We can see
+from the data summary below that our variables are in the expected ranges.
+
 ```{r}
 summary(df_clean)
 ```
 
+We additionally do some initial data exploration. Table 1 shows how our data is
+divided among our two Boolean variables. It is clear that the vast majority of
+households have not had a positive COVID-19 test. However, further analysis about
+how this relates to governor approval is less clear. Figure 1 helps visualize 
+how the data is split. The pie chart on the left shows the approval/disapproval
+rates for the households that have received a positive COVID-19 test, and the pie
+chart on the left is for households that have not had a positive test. We can see
+that there is some difference in how the approval and disapproval rates are split--
+on average, 44% of households that have tested positive disapprove of their governor's
+response, while this value is only 38% for households with no positive COVID-19 test.
+We want to test if there is a statistical significance in this difference, and our
+methods are described further in the next section.
 
 ```{r, echo = FALSE, fig.cap='Distribution of Voters\' Approval of Governor based on Positive COVID-19 Test in Household', fig.pos='!h', out.extra='trim={0 3cm 0 3cm},clip', fig.align="center"}
 df_clean_mod <- mutate(df_clean, gov_approval = ifelse(gov == gov_approve, "Approve", "Disapprove"))
