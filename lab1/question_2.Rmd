@@ -63,6 +63,8 @@ After careful exploration, our team picked the most relevant pre-election variab
 
 - `V201153` -- `FEELING THERMOMETER: KAMALA HARRIS, (D) VICE-PRESIDENTIAL CANDIDATE`
 
+that operationalize the concepts in the research question to the best.
+
 We'll use `V201018` to select Democratic voters. We'll use `V201151` and `V201153`
 to represent voter enthusiasm for the respective candidates.
 
