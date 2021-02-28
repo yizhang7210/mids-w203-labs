@@ -68,6 +68,12 @@ that operationalize the concepts in the research question to the best.
 We'll use `V201018` to select Democratic voters. We'll use `V201151` and `V201153`
 to represent voter enthusiasm for the respective candidates.
 
+As no legal data could identify to whom a party registrant voted for, we could
+safely assume that the registrant voted for the respective party. Also, introducing 
+`V201156` & `V201157` - FEELING THERMOMETER towards Democratic and Republican Party -
+to probabilistically determine to whom a registrant voted, creates ambiguity with 
+negligible benefit.
+
 For both of the `enthusiasm` variables, there were potentially non-answer values,
 which we removed from the data. And out of 1861 voters registered as Democrats,
 1788 have valid answers for both questions.
