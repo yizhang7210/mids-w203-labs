@@ -76,6 +76,34 @@ pos_test_count <- df_clean_mod %>%
   group_by(positive_test) %>%
   summarize(count = n())
 
+df_clean_mod
+
+gov_given_pos_test <- df_clean_mod[df_clean_mod$positive_test == "Positive Test"] %>%
+  group_by(gov_approval) %>%
+  summarize(count = n())
+
+gov_given_no_pos_test <- df_clean_mod[df_clean_mod$positive_test == "No Positive Test"] %>%
+  group_by(gov_approval) %>%
+  summarize(count = n())
+
+pie_pos_test <- gov_given_pos_test %>%
+  ggplot() +
+  aes(x = "", y = count, fill = gov_approval) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(fill = "Approve or Disapprove of \nGovernor's Response",
+       title = "Distribution of Approval of\nGovernor's COVID-19 Handling") +
+  theme_void()
+
+pie_no_pos_test <- gov_given_no_pos_test %>%
+  ggplot() +
+  aes(x = "", y = count, fill = gov_approval) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(fill = "Approve or Disapprove of \nGovernor's Response",
+       title = "Distribution of Approval of\nGovernor's COVID-19 Handling") +
+  theme_void()
+
 gov_pie_chart <- gov_count %>%
   ggplot() +
   aes(x = "", y = count, fill = gov_approval) +
@@ -94,8 +122,21 @@ covid_pie_chart <- pos_test_count %>%
        title = "Distribution of Households\nwith Positive COVID-19 Tests") +
   theme_void()
 
-(gov_pie_chart) | (covid_pie_chart)
+# (gov_pie_chart) | (covid_pie_chart)
+(pie_pos_test) | (pie_no_pos_test)
 ```
+
+JENNY IS WORKING ON THIS BUT I WILL BRB
+
+```{r}
+df_clean_mod$positive_test
+df_clean_mod[df_clean_mod$positive_test == "Positive Test"] 
+# %>%
+#   group_by(gov_approval) %>%
+#   summarize(count = n())
+```
+
+
 
 
 ```{r, echo = FALSE, fig.pos = '!h'}
