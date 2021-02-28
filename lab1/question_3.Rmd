@@ -6,6 +6,8 @@ output:
     toc: true
 ---
 
+\clearpage
+
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2) 
@@ -45,10 +47,10 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 ```
 
 
-## Importance and Context
+# Importance and Context
 The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.
 
-## Description of Data
+# Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
 U.S. citizens of voting age. Two variables are particularly relevant for us 
 to answer this question:
@@ -105,27 +107,29 @@ kable(summary_table,
 ```
 
 
-## Most appropriate test 
-First of all, we notice that the Approval variable is a Boolean variable. There are only
+```{r, echo = FALSE, fig.pos = '!h'}
+```
+
+
+# Most appropriate test 
+First, we notice that the governor approval variable is a Boolean variable. There are only
 two valid answers: Approve, or Disapprove. As a result, a parametric test based on some
 underlying distribution that resembles Normal would not be appropriate.
 
 At the same time, the groups (people who had a positive test in their household v.s.
-people who did not) are distinct people, and they don't seem to have a natural pairing.
+people who did not) are distinct people, and they don't have a natural pairing.
 
 Furthermore, given the sampling frame based on a cross-section of registered addresses across 50 states
 and the District of Columbia, we feel the data are sufficiently close to be i.i.d.
 
 Based on the above diagnose, the Wilcoxon Rank Sum test is the most appropriate in this case.
 
-## Test, results and interpretation
+# Test, results and interpretation
 <!-- What are the results of your test? --> 
 <!-- What do the results of this test mean? What is the practical significance? --> 
 We establish the *null hypothesis* to be that the average support for the respondent's
 governor is the same among people that had a member of the household test positive for COVID-19 and those who did not. 
-Given we have no strong initial inclination in either direction, this should be a two tailed test.
-
-We'll be using the standard $5\%$ significance level.
+Given we have no strong initial inclination in either direction, this should be a two tailed test. We use the standard $5\%$ significance level.
 
 ``` {r echo=FALSE}
 df_clean$approval <- recode(as.character(df_clean$gov), '1' = 'Approve', '2' = 'Disapprove')
@@ -139,8 +143,8 @@ wilcox.test(df_clean$gov ~ df_clean$covid)
 ```
 
 From the test we can see that the p-value is $0.0377$, which is less than the significance
-level $\alpha = 0.05$, meaning that we will reject the null hypothesis in favor of the
-alternative that people with a positive Covid test in their household *do* have a different
+level $\alpha = 0.05$, meaning that we reject the null hypothesis in favor of the
+alternative that people with a positive COVID-19 test in their household have a different
 opinion of their Governor than people without.
 
 Practically, we can calculate the correlation between the two variables.
