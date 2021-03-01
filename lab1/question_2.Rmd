@@ -91,7 +91,7 @@ summary(democraticDf)
 
 As can be seen, the mean feeling score for both are fairly similar, and because
 distributions only represent Democratic voters, 
-the scores are both fairly skewed, and each hisogram in Figure 1 shows a left tail.
+the scores are both fairly skewed, and each histogram in Figure 1 shows a left tail.
 
 ``` {r echo=FALSE, fig.cap="Histograms of Democrats\' feelings towards Biden and Harris. Since our sample only includes Democrats, it makes sense that the distributions have a left skew.", fig.pos='!h', out.extra='', out.width = "60%", fig.align="center"}
 par(mfrow=c(1, 2))
