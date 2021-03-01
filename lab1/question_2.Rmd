@@ -38,15 +38,15 @@ democraticDf <- data.frame(party=rawData$V201018,
 ```
 
 # Importance and Context
-Like many events in the year 2020, the 2020 United States general election was 
-unprecedented. For Democrats, it was a groundbreaking win. They succeeded in making
-Kamala Harris the first female vice president, the first Asian-American vice president,
-and the first African-American vice president all at the same time.
+Like many events in the year 2020, the 2020 United States general election was
+unprecedented. For Democrats, it was a groundbreaking win. They succeeded in 
+making Kamala Harris the first female vice president, the first Asian-American 
+vice president, and the first African-American vice president all at the same time. 
 
-But is it Kamala that Democratic voters were more enthusiastic about in the Biden-Harris
-combination, or is it Biden? In this report, we analyze the relative level of support
-form Democratic voters between Biden and Harris using the data from the American
-National Election Studies (ANES) 2020 Time Series Study.
+However, that Democratic voters were more enthusiastic about  Kamala, Biden, 
+or the Biden-Harris combination? This report analyzes the relative level of 
+support from Democratic voters between Biden and Harris using the data 
+from the American National Election Studies (ANES) 2020 Time Series Study. 
 
 
 # Description of Data

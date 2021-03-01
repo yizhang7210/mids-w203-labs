@@ -49,20 +49,20 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 
 # Importance and Context
 The COVID-19 pandemic has caused significant upheaval in the lives
-of U.S. citizens. The pandemic has also become highly politicized, with each political
+of U.S. citizens. The pandemic has also become highly politicized. Each political
 party criticizing the other for its response (or lack thereof) to the pandemic,
-including stay at home orders, closures of local businesses, and the encouragement
+including stay-at-home orders, closures of local businesses, and the encouragement
 of masks and social distancing.
 Simultaneously, U.S. citizens have been forming their own opinions about local
-and federal responses, and in this report we analyze if citizens' opinions of 
-their elected governors differ depending on whether or not someone in their household
-has tested positive for COVID-19. Knowing this information prior to the 2020 election
-can help state governments and political parties understand the opinions of 
-their constituents, which could influence their campaign strategies. To test if
-the approval rate of governors is different between households that have tested
-positive for COVID-19 versus those that have not, we utilize comprehensive data 
-from the American National Election Studies (ANES) 2020 Time Series Study and a 
-Wilcoxon rank sum test.
+and federal responses. This report analyzes if citizens' opinions of their elected
+governors differ depending on whether someone in their household has tested 
+positive for COVID-19. Understanding this information from before the 2020 
+election can help state governments and political parties identify their 
+constituents' opinions, turning their future campaign strategies in a
+different direction. To test if governors' approval rate is different between 
+households that have tested positive for COVID-19 versus those who have not, 
+we utilize comprehensive data from the American National Election 
+Studies (ANES) 2020 Time Series Study Wilcoxon rank-sum test. 
 
 <!--The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.-->
 
@@ -79,7 +79,7 @@ Both variables are binary variables. In `V201145`, governor approval is
 represented by the value 1, while disapproval is represented by the number 2. We
 remove the remaining irrelevant values, including those for refusal to answer and
 interviewees whose responses got cut off. The breakoff of a survey response 
-could happen for a variety of reasons, including lack of Internet or phone service.
+could happen for various reasons, including lack of Internet or phone service.
 
 For `V201624`, the value 1 is assigned if there has been a positive
 COVID-19 test in the respondent's household; the value 2 is assigned if there has
