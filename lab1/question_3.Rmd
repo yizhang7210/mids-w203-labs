@@ -53,21 +53,25 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 # Importance and Context
 The COVID-19 pandemic has caused significant upheaval in the lives
 of U.S. citizens. The pandemic has also become highly politicized. Each political
-party criticizing the other for its response (or lack thereof) to the pandemic,
+party criticizes the other for its response (or lack thereof) to the pandemic,
 including stay-at-home orders, closures of local businesses, and the encouragement
 of masks and social distancing.
 Simultaneously, U.S. citizens have been forming their own opinions about local
 and federal responses. This report analyzes if citizens' opinions of their elected
 governors differ depending on whether someone in their household has tested 
-positive for COVID-19. Understanding this pre-2020 election information 
+positive for COVID-19. Our driving research question is, "Are survey respondents 
+who have had someone in their home infected by COVID-19 more likely to 
+disapprove of the way their governor is handling the pandemic?" 
+
+Understanding this pre-2020 election information 
 election can help state governments and political parties identify their 
 constituents' opinions, turning their future campaign strategies in a
-different direction. To test if governors' approval rate is different between 
-households that have tested positive for COVID-19 versus those who have not, 
-we utilize comprehensive data from the American National Election 
-Studies (ANES) 2020 Time Series Study Wilcoxon rank-sum test. 
-
-<!--The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.-->
+different direction.
+We compare the survey respondents' approval/disapproval rates of their governors' 
+COVID-19 response between two different groups: those who have had someone in their home
+infected by COVID-19 and those who have not. We utilize comprehensive data from 
+the American National Election Studies (ANES) 2020 Time Series Study
+and a Wilcoxon rank-sum test. 
 
 # Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
@@ -251,7 +255,9 @@ a large sample size, we calculated the Wilcoxon Rank Sum effect size. We found
 the effect size to be equal to $0.023$, which is a very low value and indicates a very 
 low-magnitude effect. Practically speaking the difference between the two groups in 
 our test is very minimal, and our pie charts in Figure 1 further corroborate 
-this finding. Interestingly, however, it is likely that politicians and political
+this finding. Households with a positive COVID-19 test are more likely to disapprove
+of their governor's COVID-19 response, even though the actual size of this effect is small. 
+Interestingly, however, it is likely that politicians and political
 parties made specific appeals in their campaigns to families who have received
 a positive COVID-19 test in hopes of winning their vote due to their dissatisfaction
 with their governor's or state's response to COVID-19. Even this small difference
@@ -268,7 +274,10 @@ However given the magnitude of the the correlation coefficient. The linear relat
 very strong. -->
 
 ```{r, echo = FALSE}
-eff_size <- df_clean %>% wilcox_effsize(gov ~ covid)
-effect <- eff_size$effsize
+# This code takes a few minutes to run, so it is commented out to allow for
+# faster knitting
+
+# eff_size <- df_clean %>% wilcox_effsize(gov ~ covid)
+# effect <- eff_size$effsize
 ```
 
