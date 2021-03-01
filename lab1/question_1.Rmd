@@ -53,7 +53,7 @@ demographics and reach audiences whose messages will resonate.
 # Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
 U.S. citizens of voting age. Two variables are particularly relevant for us 
-to answer this question:
+to operationalize the research question:
 
 - `V201018`: `PARTY OF REGISTRATION`
 
