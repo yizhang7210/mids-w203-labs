@@ -150,16 +150,24 @@ We are 95% confident that this interval contains the true difference in levels o
 On a practical level, we can see that the mean of the differences is fairly small ($0.71$),
 less than 1 point on the $0-100$ scale.
 
-Furthermore, if we plot the difference across the board, we can see that vast majority
-of Democrat voters' feeling score for Biden and Harris are within 5 points of each other,
-so the effect size is indeed small.
+Furthermore, as can be seen in Figure 2 below, when we plot the difference across the board (with 20 bins, each
+representing a 5 points difference), we can see that vast majority of Democrat voters' feeling score for
+Biden and Harris are close to each other, so the effect size is indeed small.
+
+``` {r fig, fig.cap = "Histogram of absolute differences between individuals\' scores for Biden and for Harris. Most individuals have a small difference in feelings between the two.", fig.align = "center", echo=FALSE, fig.pos='!h', out.extra='', out.width = "60%"}
+feeling_diffs = abs(democraticDf$Biden - democraticDf$Harris)
+
+hist(feeling_diffs, breaks=20, main="Voter Feelings - Difference", xlab = "Difference in Feeling Score", ylab = "Number of people")
+```
 
 ``` {r echo=FALSE}
-feeling_diffs = abs(democraticDf$Biden - democraticDf$Harris)
+
 percentage_equal <- length(feeling_diffs[feeling_diffs == 0]) / length(feeling_diffs)
+percentage_within_5 <- length(feeling_diffs[feeling_diffs <= 5]) / length(feeling_diffs)
 percentage_within_20 <- length(feeling_diffs[feeling_diffs <= 20]) / length(feeling_diffs)
 
 paste(100 * round(percentage_equal, 4), "% of Democratic voters gave Biden and Harris the same score.")
+paste(100 * round(percentage_within_5, 4), "% of Democratic voters gave Biden and Harris scores within 5 pointse.")
 paste(100 * round(percentage_within_20, 4), "% of Democratic voters gave Biden and Harris scores within 20 points.")
 
 ```
@@ -168,9 +176,6 @@ paste(100 * round(percentage_within_20, 4), "% of Democratic voters gave Biden a
 Although curiously, there are a few people who gave Biden and Harris very different
 feeling scores, as much as 100!
 
-``` {r fig, fig.cap = "Histogram of absolute differences between individuals\' scores for Biden and for Harris. Most individuals have a small difference in feelings between the two.", fig.align = "center", echo=FALSE, fig.pos='!h', out.extra='', out.width = "60%"}
-hist(feeling_diffs, breaks=20, main="Voter Feelings - Difference", xlab = "Difference in Feeling Score", ylab = "Number of people")
-```
 
 Although the results from this pre-election survey are not statistically significant,
 having this knowledge can establish a baseline for how Democrats view Biden
