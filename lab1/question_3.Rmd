@@ -13,9 +13,6 @@ library(dplyr)
 library(ggplot2) 
 library(ggcorrplot)
 library(haven)
-# install.packages("rstatix")
-# install.packages('coin')
-library(rstatix)
 
 library(tidyverse) 
 library(magrittr)
@@ -52,20 +49,20 @@ df_clean <- df_clean[df_clean$gov > 0,] # remove don't know/refused
 
 # Importance and Context
 The COVID-19 pandemic has caused significant upheaval in the lives
-of U.S. citizens. The pandemic has also become highly politicized. Each political
+of U.S. citizens. The pandemic has also become highly politicized, with each political
 party criticizing the other for its response (or lack thereof) to the pandemic,
-including stay-at-home orders, closures of local businesses, and the encouragement
+including stay at home orders, closures of local businesses, and the encouragement
 of masks and social distancing.
 Simultaneously, U.S. citizens have been forming their own opinions about local
-and federal responses. This report analyzes if citizens' opinions of their elected
-governors differ depending on whether someone in their household has tested 
-positive for COVID-19. Understanding this pre-2020 election information 
-election can help state governments and political parties identify their 
-constituents' opinions, turning their future campaign strategies in a
-different direction. To test if governors' approval rate is different between 
-households that have tested positive for COVID-19 versus those who have not, 
-we utilize comprehensive data from the American National Election 
-Studies (ANES) 2020 Time Series Study Wilcoxon rank-sum test. 
+and federal responses, and in this report we analyze if citizens' opinions of 
+their elected governors differ depending on whether or not someone in their household
+has tested positive for COVID-19. Knowing this information prior to the 2020 election
+can help state governments and political parties understand the opinions of 
+their constituents, which could influence their campaign strategies. To test if
+the approval rate of governors is different between households that have tested
+positive for COVID-19 versus those that have not, we utilize comprehensive data 
+from the American National Election Studies (ANES) 2020 Time Series Study and a 
+Wilcoxon rank sum test.
 
 <!--The COVID-19 has changed everything, and one of the most important aspects is how the campaigns for the US 2020 elections were conducted. The pandemic forced to cancel conventions and prompted many states to change how people get and submit their ballots, with all the uncertainty it created. And to make things worse, all of this happened in the middle of social distancing restrictions not seen since almost a century. It's essential to understand how elected officials' approval changed when people got in close contact with COVID-19.-->
 
@@ -78,17 +75,11 @@ to answer this question:
 
 - `V201624`: `ANYONE IN HOUSEHOLD TESTED POS FOR COVID-19`
 
-While there are other variables in the ANES data set that could have been helpful
-in answering this question, including 
-`V201146 -- PRE: HOW MUCH APPROVE/DISAPPROVE R’S GOVERNOR HANDLING COVID-19`, 
-we believe the two highlighted above best address and most successfully 
-operationalize our research question.
-
 Both variables are binary variables. In `V201145`, governor approval is 
 represented by the value 1, while disapproval is represented by the number 2. We
 remove the remaining irrelevant values, including those for refusal to answer and
 interviewees whose responses got cut off. The breakoff of a survey response 
-could happen for various reasons, including lack of Internet or phone service.
+could happen for a variety of reasons, including lack of Internet or phone service.
 
 For `V201624`, the value 1 is assigned if there has been a positive
 COVID-19 test in the respondent's household; the value 2 is assigned if there has
@@ -197,78 +188,51 @@ kable(summary_table,
 
 
 # Most appropriate test 
-To answer our question of whether individuals' opinions of their governor's response
-to the COVID-19 pandemic depends on whether someone in their household has tested
-positive for COVID-19, we use a Wilcoxon Rank Sum Test. We believe this test is
-most appropriate for the given data because our data is ordinal: approval/disapproval
-of the governor's response is a categorical variable with a natural ordering. A
-parametric test based on some underlying distribution that resembles a normal 
-distribution would not be appropriate. Furthermore, the two groups of interest
-(people who had a positive test in their household v.s.
-people who did not) are distinct observations, and they don't have a natural pairing.
+First, we notice that the governor approval variable is a Boolean variable. There are only
+two valid answers: Approve, or Disapprove. As a result, a parametric test based on some
+underlying distribution that resembles Normal would not be appropriate.
 
-There are two main assumptions for the Wilcoxon Rank Sum Test:
+At the same time, the groups (people who had a positive test in their household v.s.
+people who did not) are distinct people, and they don't have a natural pairing.
 
-1. Ordinal variable: As discusses already, approval/disapproval of the governor's
-response is an ordinal variable.
-
-2. i.i.d.: Given the sampling frame based on a cross-section of registered 
-addresses across 50 states
+Furthermore, given the sampling frame based on a cross-section of registered addresses across 50 states
 and the District of Columbia, we feel the data are sufficiently close to be i.i.d.
 
-With all assumptions sufficiently met, we proceed with a Wilcoxon Rank Sum Test.
+Based on the above diagnose, the Wilcoxon Rank Sum test is the most appropriate in this case.
 
 # Test, results and interpretation
 <!-- What are the results of your test? --> 
 <!-- What do the results of this test mean? What is the practical significance? --> 
-We establish the *null hypothesis* to be that there is no difference in the opinions
-of the governor's response between individuals who have had a positive COVID-19 test in their household compared to those who have not had a positive test. Our *alternative hypothesis* is
-that there is a difference between the opinions of the two groups.
-Given we have no strong initial inclination in either direction, we conduct a two tailed test. We use the standard $5\%$ significance level.
+We establish the *null hypothesis* to be that the average support for the respondent's
+governor is the same among people that had a member of the household test positive for COVID-19 and those who did not. 
+Given we have no strong initial inclination in either direction, this should be a two tailed test. We use the standard $5\%$ significance level.
 
 ``` {r echo=FALSE}
 df_clean$approval <- recode(as.character(df_clean$gov), '1' = 'Approve', '2' = 'Disapprove')
 df_clean$covid_tested <- recode(as.character(df_clean$covid), '1' = 'Positive', '2' = 'Not positive')
 ```
 
-<!--First take a look at the table in each of the 4 cases for context, then run the test.-->
-```{r, echo = FALSE}
-table_results <- table(df_clean$approval, df_clean$covid_tested)
-```
-
+First take a look at the table in each of the 4 cases for context, then run the test.
 ```{r}
+table(df_clean$approval, df_clean$covid_tested)
 wilcox.test(df_clean$gov ~ df_clean$covid)
 ```
 
-
 From the test we can see that the p-value is $0.0377$, which is less than the significance
-level $\alpha = 0.05$.We reject the null hypothesis in favor of the
-alternative that people with a positive COVID-19 test in their household do have a different
-opinion of their governor's response than people without.
+level $\alpha = 0.05$, meaning that we reject the null hypothesis in favor of the
+alternative that people with a positive COVID-19 test in their household have a different
+opinion of their Governor than people without.
 
-There is little practical significance in these results. Because we have 
-a large sample size, we calculated the Wilcoxon Rank Sum effect size. We found
-the effect size to be equal to $0.023$, which is a very low value and indicates a very 
-low-magnitude effect. Practically speaking the difference between the two groups in 
-our test is very minimal, and our pie charts in Figure 1 further corroborate 
-this finding. Interestingly, however, it is likely that politicians and political
-parties made specific appeals in their campaigns to families who have received
-a positive COVID-19 test in hopes of winning their vote due to their dissatisfaction
-with their governor's or state's response to COVID-19. Even this small difference
-likely caused a change in campaign strategies.
+Practically, we can calculate the correlation between the two variables.
 
 ```{r echo=FALSE, fig.cap='Correlation Table for Voters\' Approval of Governor and Household COVID-19 Tests', fig.pos='!h'}
 r <- cor(data.frame('Approve' = as.numeric(df_clean_mod$gov==1), 'Disapprove' = as.numeric(df_clean_mod$gov==2), 'Positive' = as.numeric(df_clean_mod$covid==1), 'Not_Positive' = as.numeric(df_clean_mod$covid==2)))
-plt <- ggcorrplot(r[3:4,1:2], lab = TRUE, ggtheme = ggplot2::theme_dark(), digits = 3)
+ggcorrplot(r[3:4,1:2], lab = TRUE, ggtheme = ggplot2::theme_dark(), digits = 3)
 ```
 
-<!-- As presented in Fig. 2, having a positive test in the household does linearly 
+As presented in Fig. 2, having a positive test in the household does linearly 
 correlate to less likely to approve the Governor's handling of the pandemic.
 However given the magnitude of the the correlation coefficient. The linear relationship isn't
-very strong. -->
+very strong.
 
-```{r, echo = FALSE}
-eff_size <- df_clean %>% wilcox_effsize(gov ~ covid)
-effect <- eff_size$effsize
-```
 

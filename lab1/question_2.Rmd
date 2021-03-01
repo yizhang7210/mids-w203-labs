@@ -39,19 +39,14 @@ democraticDf <- data.frame(party=rawData$V201018,
 
 # Importance and Context
 Like many events in the year 2020, the 2020 United States general election was 
-unprecedented. The Democrats scored a major victory in the presidential election;
-in particular, the election of Kamala Harris as the first female Vice President, 
-the first Asian-American Vice President,
-and the first African-American Vice President was groundbreaking. 
-The new President and Vice President have a long road ahead of them to address
-many of today's pressing issues, including the pandemic and economic crisis. However, we 
-are curious if Democratic voters had differing levels of enthusiasm for Biden and
-Harris leading up to the election. Were Democratic voters more enthusiastic about Biden
-leading up to the election or Harris? Knowing the public perception of each individual
-could influence their public image during the course of Biden's presidency. 
-In this report, we analyze the relative level of support
-from Democratic voters between Biden and Harris using the data from the American
-National Election Studies (ANES) 2020 Time Series Study and a paired t-test.
+unprecedented. For Democrats, it was a groundbreaking win. They succeeded in making
+Kamala Harris the first female vice president, the first Asian-American vice president,
+and the first African-American vice president all at the same time.
+
+But is it Kamala that Democratic voters were more enthusiastic about in the Biden-Harris
+combination, or is it Biden? In this report, we analyze the relative level of support
+form Democratic voters between Biden and Harris using the data from the American
+National Election Studies (ANES) 2020 Time Series Study.
 
 
 # Description of Data
@@ -60,7 +55,7 @@ The American National Election Studies (ANES) conducts surveys of voters in the
 United States, with a flagship survey occurring immediately before and after 
 each presidential election. ANES survey fits well in our research question. The 
 variables tracked in the survey gives a multi-dimensional view about voters.
-After careful exploration, we selected the most relevant pre-election variables:
+After careful exploration, our team picked the most relevant pre-election variables to be:
 
 - `V201018` -- `PARTY OF REGISTRATION`
 
@@ -71,16 +66,16 @@ After careful exploration, we selected the most relevant pre-election variables:
 that operationalize the concepts in the research question to the best.
 
 We'll use `V201018` to select Democratic voters. We'll use `V201151` and `V201153`
-to represent voter enthusiasm for the respective candidates. Voter enthusiasm
-is measured on a scale from 0 to 100, with 100 being the most enthusiastic.
+to represent voter enthusiasm for the respective candidates.
 
-As no legal data could identify to whom a party registrant voted for, we assume that the registrant voted for the candidate from their registered party (i.e. A voter registered as a Democrat likely voted for the Democratic candidate, Joe Biden). We considered using the  
-`V201156` & `V201157` - FEELING THERMOMETER variables to predict which candidate 
-an individual would vote for. However, we felt this would involve too many ambiguous
-assumptions, and we preferred using PARTY OF REGISTRATION instead.
+As no legal data could identify to whom a party registrant voted for, we could
+safely assume that the registrant voted for the respective party. Also, introducing 
+`V201156` & `V201157` - FEELING THERMOMETER towards Democratic and Republican Party -
+to probabilistically determine to whom a registrant voted, creates ambiguity with 
+negligible benefit.
 
-For both of the `FEELING THERMOMETER` variables, there were non-answer values,
-which we removed from the data. Out of 1861 voters registered as Democrats,
+For both of the `enthusiasm` variables, there were potentially non-answer values,
+which we removed from the data. And out of 1861 voters registered as Democrats,
 1788 have valid answers for both questions.
 
 The data are summarized below:
@@ -90,10 +85,9 @@ summary(democraticDf)
 ```
 
 As can be seen, the mean feeling score for both are fairly similar, and because
-distributions only represent Democratic voters, 
-the scores are both fairly skewed, and each hisogram in Figure 1 shows a left tail.
+these are Democrat voters, the scores are both fairly skewed towards the high side.
 
-``` {r echo=FALSE, fig.cap="Histograms of Democrats\' feelings towards Biden and Harris. Since our sample only includes Democrats, it makes sense that the distributions have a left skew.", fig.pos='!h', out.extra='', out.width = "60%", fig.align="center"}
+``` {r echo=FALSE}
 par(mfrow=c(1, 2))
 hist(democraticDf$Biden, main="Voter Feelings - Biden", xlab = "Feeling Score", ylab = "Number of people", col='blue')
 hist(democraticDf$Harris, main="Voter Feelings - Harris", xlab = "Feeling Score", ylab = "Number of people",  col='red')
@@ -106,18 +100,27 @@ hist(democraticDf$Harris, main="Voter Feelings - Harris", xlab = "Feeling Score"
 
 
 # Most appropriate test 
-As the same voter is expressing her/his feelings towards both candidates and the
-feelings are recorded as non-ordinal values,
-the correct test is a paired t-test.
+As the same voter is expressing her/his feeling towards both the candidates, 
+the correct test for the data in non-ordinal value is paired t-test.
 
-We evaluate the assumptions for paired t-test:
+The assumptions for paired t-test are:
 
-1. The dependent variable (feelings rating) is metric since it is on a scale from 0 to 100.
+1. The dependent variable must be metric.
+
+2. The observations are independent of one another and identically distributed.
+
+3. The dependent variable should be approximately normally distributed given the sample size.
+
+Going through them for this situation:
+
+1. The feelings rating is from 0 to 100 so it is a metric scale.
 
 2. Given the sampling frame based on a cross-section of registered addresses across 50 states
 and the District of Columbia, we feel the data are sufficiently close to be i.i.d.
 
-3. As can be seen in the histograms in Figure 1, the data is fairly skewed and far from symmetric, so it is a concern here. However given the sample size (1788), the CLT should apply and make the sampling distribution of the mean reasonably normal-like.
+3. As can be seen in the histograms, the data is fairly skewed and far from symmetric, so it
+is a concern here. However given the sample size (1788), the CLT should apply and make the
+sampling distribution of the mean reasonably normal-like.
 
 #    Test, results and interpretation
 For the test itself, we establish the *null hypothesis* to be that the average level of
@@ -140,12 +143,10 @@ significance level of $\alpha = 0.05$, therefore we failed to reject the null hy
 
 However given the p-value is fairly close to $0.05$, it could be considered as a
 marginally statistically significant result for the two tailed test. Even though we do not have sufficiently strong evidence to
-believe Democratic voters' level of support for Biden and Harris are different given the data
-at a $5\%$ significance level, there does seem to be some level of disparity.
+believe Democrat voter's level of support for Biden and Harris are different given the data
+at a $5%$ significance level, there does seem to be some level of disparity.
 
-In addition, a 95% confidence interval for the difference of voter feelings' mean between Biden and Harris $\mu_B-\mu_H$ is (-1.4904, 0.0698). Because the value 0 is included in this
-confidence interval, we cannot reject the null hypothesis at this significance level.
-We are 95% confident that this interval contains the true difference in levels of support.
+In addition, a 95% confidence interval for the difference of voter feelings' mean between Biden and Harris $\mu_B-\mu_H$ is (-1.4904, 0.0698). Meaning out of all confidence intervals constructed, 95% of the time the interval will contain the true mean.
 
 On a practical level, we can see that the mean of the differences is fairly small ($0.71$),
 less than 1 point on the $0-100$ scale.
@@ -168,18 +169,11 @@ paste(100 * round(percentage_within_20, 4), "% of Democratic voters gave Biden a
 Although curiously, there are a few people who gave Biden and Harris very different
 feeling scores, as much as 100!
 
-``` {r fig, fig.cap = "Histogram of absolute differences between individuals\' scores for Biden and for Harris. Most individuals have a small difference in feelings between the two.", fig.align = "center", echo=FALSE, fig.pos='!h', out.extra='', out.width = "60%"}
+``` {r fig, fig.height = 4, fig.width = 5, fig.align = "center", echo=FALSE }
 hist(feeling_diffs, breaks=20, main="Voter Feelings - Difference", xlab = "Difference in Feeling Score", ylab = "Number of people")
 ```
 
-Although the results from this pre-election survey are not statistically significant,
-having this knowledge can establish a baseline for how Democrats view Biden
-versus Harris. This could influence how the Democratic Party uses each individual
-to influence Party activities. In particular, knowing how the feelings for each
-individual changes over time could impact which candidate the Democratic Party runs
-in the 2024 election. We now have a baseline for understanding how Democratic
-voters feel towards the two individuals, and keeping track of these feelings will
-be important going into the future.
+
 
 
 

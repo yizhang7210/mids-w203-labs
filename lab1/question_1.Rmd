@@ -35,25 +35,24 @@ df_clean <- df_clean[(df_clean$party == DEMOCRATS | df_clean$party == REPUBLICAN
 
 
 # Importance and Context
-
-Like many events in the year 2020, the 2020 United States general election was
-unprecedented. Occurring during a global pandemic with political polarization 
-at an all-time high and the most diverse candidate pool in U.S. history, 
-the 2020 election posed new challenges and opportunities for American citizens 
-and politicians. One key component that both major political parties utilized 
-was appealing to voters and encouraging voter turnout. In order to appeal to 
-the correct demographic base, it is helpful to understand who comprises each 
-political party. One distinguishing factor could be age. This report uses 
-comprehensive data from the American National Election Studies (ANES) 2020 
-Time Series Study to analyze the relative ages of voters registered as either 
-Republican or Democratic using an unpaired two-sample t-test. Understanding 
-age distributions could help politicians target their campaigns to appropriate 
-demographics and reach audiences whose messages will resonate. 
+Like many events in the year 2020, the 2020 United States general election was 
+unprecedented. Occurring during a global pandemic with political 
+polarization at an all-time high and the most diverse candidate pool in U.S. 
+history, the 2020 election posed new challenges and opportunities for 
+American citizens and politicians. One key component that both major political 
+parties utilized was appealing to voters and encouraging voter turnout. In order 
+to appeal to the correct demographic base, it is helpful to understand who 
+comprises each political party. One distinguishing factor could be age. In this 
+report, we use comprehensive data from the American National Election Studies 
+(ANES) 2020 Time Series Study to analyze the relative ages of voters registered 
+as either Republican or Democratic using an unpaired two-sample t-test. 
+Understanding age distributions could help politicianstarget their campaigns to 
+appropriate demographics and reach audiences with whom their messages will resonate.
 
 # Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
 U.S. citizens of voting age. Two variables are particularly relevant for us 
-to answer this question:
+to operationalize our research question:
 
 - `V201018`: `PARTY OF REGISTRATION`
 
