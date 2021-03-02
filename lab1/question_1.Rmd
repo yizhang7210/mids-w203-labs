@@ -1,5 +1,6 @@
 ---
 title: 'Lab 1 Question 1: Are Democratic Voters Older or Younger Than Republican Voters in 2020?'
+subtitle: 'Github Repo Link: https://github.com/yizhang7210/mids-w203-labs'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
@@ -61,13 +62,7 @@ our study.
 For `PARTY OF REGISTRATION`, we are only interested in registered Democrats and 
 Republicans, so we remove individuals who identify as independents,
 other parties, as well as other non-answers, i.e. "inapplicable," "don't know," and
-"refused" to respond.
-
-Similarly, for `SUMMARY: RESPONDENT AGE`, we remove people who refused to answer.
-
-After these cleanup operations, we are left with only 3,074 observations to work with.
-
-Looking at summaries for each variable, the variables are now all in the correct range.
+"refused" to respond. Similarly, for `SUMMARY: RESPONDENT AGE`, we remove people who refused to answer. After these cleanup operations, we are left with only 3,074 observations to work with. Looking at summaries for each variable, the variables are now all in the correct range.
 
 ``` {r echo=FALSE}
 summary(df_clean)

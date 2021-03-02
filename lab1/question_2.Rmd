@@ -1,5 +1,6 @@
 ---
 title: 'Lab 1 Question 2: Are Democratic voters more enthusiastic about Joe Biden or Kamala Harris?'
+subtitle: 'Github Repo Link: https://github.com/yizhang7210/mids-w203-labs'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
@@ -71,10 +72,7 @@ We use `V201018` to select Democratic voters. `V201151` and `V201153`
 represent voter enthusiasm for the respective candidates and are measured on a 
 scale from 0 to 100, with 100 being the most enthusiastic.
 
-As no data could identify who a party registrant voted for, we assume that the registrant voted for the candidate from their registered party (i.e. A voter registered as a Democrat likely voted for the Democratic candidate). We considered using the  
-`FEELING THERMOMETER` variables to predict which candidate 
-an individual would vote for. However, we felt this would involve too many ambiguous
-assumptions, and we opted to use `PARTY OF REGISTRATION` instead.
+As no data could identify who a party registrant voted for, we assume that the registrant voted for the candidate from their registered party (i.e. A voter registered as a Democrat likely voted for the Democratic candidate). We considered using the  `FEELING THERMOMETER` variables to predict which candidate an individual would vote for. However, we felt this would involve too many ambiguous assumptions, and we opted to use `PARTY OF REGISTRATION` instead.
 
 For both of the `FEELING THERMOMETER` variables, there were non-answer values,
 which we removed from the data. Out of 1,861 voters registered as Democrats,
@@ -98,11 +96,9 @@ hist(democraticDf$Harris, main="Voter Feelings - Harris", xlab = "Feeling Score"
 
 
 # Most appropriate test 
-As the same voter is expressing her/his feelings towards both candidates and the
+Since the same voter expresses their feelings towards both candidates and the
 feelings are recorded as non-ordinal values,
-the correct test is a paired t-test.
-
-We evaluate the assumptions for paired t-test:
+the correct test is a paired t-test. We evaluate the assumptions for paired t-test:
 
 1. The dependent variable (feelings rating) is metric since it is on a scale from 0 to 100.
 
