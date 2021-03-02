@@ -1,12 +1,9 @@
 ---
 title: 'Lab 1 Question 1: Are Democratic Voters Older or Younger Than Republican Voters in 2020?'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
-output: 
-  bookdown::pdf_document2: 
-    toc: true
+output: pdf_document
 ---
 
-\clearpage
 
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -48,7 +45,7 @@ comprehensive data from the American National Election Studies (ANES) 2020
 Time Series Study to analyze the relative ages of voters registered as either 
 Republican or Democratic using an unpaired two-sample t-test. Understanding 
 age distributions could help politicians target their campaigns to appropriate 
-demographics and reach audiences whose messages will resonate. 
+demographics and reach audiences with whom their messages will resonate. 
 
 # Description of Data
 The ANES data set contains information from 8,280 pre-election interviews with 
@@ -59,11 +56,11 @@ to operationalize the research question:
 
 - `V201507x`: `SUMMARY: RESPONDENT AGE`
 
-We noticed that each variable takes on both relevant and irrelevant values for 
+Each variable takes on both relevant and irrelevant values for 
 our study.
 For `PARTY OF REGISTRATION`, we are only interested in registered Democrats and 
-Republicans, so we remove non or independent,
-other parties as well as other non-answers, i.e. "inapplicable," "don't know," and
+Republicans, so we remove individuals who identify as independents,
+other parties, as well as other non-answers, i.e. "inapplicable," "don't know," and
 "refused" to respond.
 
 Similarly, for `SUMMARY: RESPONDENT AGE`, we remove people who refused to answer.
@@ -88,12 +85,12 @@ hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", yla
 
 
 # Most appropriate test
-The unpaired two-sample t-test is the most appropriate to answer this question.
+The unpaired two-sample t-test is most appropriate to answer this question.
 We are comparing a quantitative, interval variable for two distinct groups of people with no natural pairing between them.
-This directs us to an unpaired t-test, and we evaluate the validity of the two-sample
-unpaired t-test which requires the following assumptions to be true:
+This directs us to an unpaired t-test, and we evaluate the validity of the 
+assumptions under the two-sample unpaired t-test:
 
-1. Although the age data does not quite follow a normal distribution as shown in the histogram above, the data set is large enough with 3,074 valid observations for the Central Limit Theorem to apply.
+1. Although the age data does not quite follow a normal distribution as shown in the histogram in Figure 1, the data set is large enough with 3,074 valid observations for the Central Limit Theorem to apply.
 Therefore, this data satisfies the normality assumption of the unpaired t-test.
 
 2. Given the sampling frame based on a cross-section of registered addresses across 50 states
@@ -103,7 +100,7 @@ and the District of Columbia, we feel the data are sufficiently close to be i.i.
 
 # Test, results and interpretation
 For the test itself, we establish the *null hypothesis* to be that the average age
-of Democrats ($\mu_D$) and average age of Republicans ($\mu_R$) are the same. And *the alternative hypothesis* is that they're not.
+of Democrats ($\mu_D$) and average age of Republicans ($\mu_R$) are the same. The *alternative hypothesis* is that they are not.
 Given we have no strong initial inclination in either direction, this should be a two tailed test.
 
 We'll be using the standard $5\%$ significance level.
@@ -117,7 +114,9 @@ t.test(df_clean$age ~ df_clean$party)
 From the test, we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result.
 This gives us evidence to reject the null hypothesis in favor of the alternative and
 believe that the average age of the Democrats and the Republicans are indeed different,
-given the data and a 5% significance level. In addition, a 95% confidence interval for the difference of mean between Democrats and Republicans $\mu_D-\mu_R$ is (-4.5312, -2.0965). Meaning we are 95% confident that the true difference lies in this range.
+given the data and a 5% significance level. In addition, a 95% confidence interval for the difference of mean between Democrats and Republicans $\mu_D-\mu_R$ is (-4.5312, -2.0965). Meaning we are 95% confident that the true difference lies in this range, implying that
+we cannot claim there is no difference in age between the two groups since the value
+0 is not in the confidence interval.
 
 Practically, as can be seen in Figure 2, the average age of a Republican is more than 3 years
 older than a Democrat.
