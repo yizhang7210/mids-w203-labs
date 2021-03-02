@@ -1,12 +1,8 @@
 ---
 title: 'Lab 1 Question 3: Are survey respondents who have had someone in their home infected by COVID-19 more likely to disapprove of the way their governor is handling the pandemic?'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
-output: 
-  bookdown::pdf_document2: 
-    toc: true
+output: pdf_document
 ---
-
-\clearpage
 
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -271,8 +267,8 @@ However given the magnitude of the the correlation coefficient. The linear relat
 very strong. -->
 
 ```{r, echo = FALSE}
-# This code takes a few minutes to run, so it is commented out to allow for
-# faster knitting
+# NOTE: This code takes several minutes to run
+# It is recommended to comment these two lines of code out when kitting the PDF
 
 eff_size <- df_clean %>% wilcox_effsize(gov ~ covid)
 effect <- eff_size$effsize
