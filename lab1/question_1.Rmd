@@ -1,12 +1,9 @@
 ---
 title: 'Lab 1 Question 1: Are Democratic Voters Older or Younger Than Republican Voters in 2020?'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
-output: 
-  bookdown::pdf_document2: 
-    toc: true
+output: pdf_document
 ---
 
-\clearpage
 
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(dplyr)
