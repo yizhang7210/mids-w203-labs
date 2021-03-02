@@ -1,6 +1,6 @@
 ---
 title: 'Lab 1 Question 2: Are Democratic voters more enthusiastic about Joe Biden or Kamala Harris?'
-subtitle: 'Github Repo Link: https://github.com/yizhang7210/mids-w203-labs'
+subtitle: 'GitHub Repo Link: https://github.com/yizhang7210/mids-w203-labs'
 author: "Yao Chen, Jenny Conde, Satheesh Joseph, Paco Valdez, Yi Zhang"
 output: pdf_document
 ---
