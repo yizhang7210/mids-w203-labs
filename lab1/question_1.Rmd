@@ -11,24 +11,31 @@ library(dplyr)
 library(ggplot2) 
 library(tidyverse) # if you want more, but still core, toolkit
 library(haven)
+library(magrittr)
 ```
+
+```{r}
+theme_set(theme_minimal())
+```
+
 
 ```{r load and clean data, echo=FALSE, warning=TRUE, message=FALSE}
 # Load data
-df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta')
-
-# Pick out the useful variables
 # V201018 -- PRE: PARTY OF REGISTRATION
 # V201507x -- PRE: SUMMARY: RESPONDENT AGE
-df_small <- data.frame(party=df$V201018, age=df$V201507x)
 
-DEMOCRATS <- 1
-REPUBLICANS <- 2
+df <- read_dta('data/anes_timeseries_2020_stata_20210211.dta') %>% 
+  mutate(
+    party = case_when(
+      V201018 == 1 ~ 'Democratic Party', 
+      V201018 == 2 ~ 'Republican Party'), 
+    age = as.numeric(V201507x)) %>% 
+  filter(
+    age > 0, 
+    party %in% c('Democratic Party', 'Republican Party')) %>% 
+  select(age, party)
 
-# Clean up the data
-df_clean <- df_small
-df_clean <- df_clean[df_clean$age > 0,] # Remove non-respondent for age
-df_clean <- df_clean[(df_clean$party == DEMOCRATS | df_clean$party == REPUBLICANS),] # Only include D or R
+df
 ```
 
 
@@ -65,7 +72,7 @@ other parties, as well as other non-answers, i.e. "inapplicable," "don't know," 
 "refused" to respond. Similarly, for `SUMMARY: RESPONDENT AGE`, we remove people who refused to answer. After these cleanup operations, we are left with only 3,074 observations to work with. Looking at summaries for each variable, the variables are now all in the correct range.
 
 ``` {r echo=FALSE}
-summary(df_clean)
+summary(df)
 ```
 
 From Figure 1, we can see that the ANES data contains a larger number of Democrats than Republicans, and the age distribution is not very skewed. We also note that ANES cuts off the values for age at 80, so everyone above age 80 is grouped into the "80 or older" group. 
@@ -73,9 +80,9 @@ This means the average age shown in the ANES data will underestimate the true
 average age of the participants.
 
 ``` {r echo=FALSE, fig.cap="Distributions of party affiliation and age within the ANES data set", fig.pos='!h', out.extra='', out.width = "75%", fig.align="center"}
-par(mfrow=c(1, 2))
-pie(table(df_clean$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans'))
-hist(df_clean$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
+par(mfrow=c(1,2))
+ pie(table(df$party), main="Participants Party Affiliation", labels=c('Democrats', 'Republicans')) # error at knit; that's a problem.
+hist(df$age, main="Participants Age Distribution", xlab = "age group", ylab = "Number of people")
 ```
 
 
@@ -103,7 +110,7 @@ We'll be using the standard $5\%$ significance level.
 $H_0: \mu_D=\mu_R \hspace{4 cm} H_a: \mu_D \neq \mu_R \hspace{4 cm} \alpha=0.05$
 
 ``` {r}
-t.test(df_clean$age ~ df_clean$party)
+t.test(age ~ party, data = df)
 ```
 
 From the test, we have a very small p-value that is much less than our significance level $\alpha$, representing a highly significant result.
@@ -123,24 +130,28 @@ For instance, because Republican registered voters are likely to be older than D
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="The distribution of age differs for each political party we analyze. The dotted lines represent the average age in each respective political party. Average age of Democrats surveyed is 52.5. Average age of Republicans surveyed is 55.9.", fig.pos='!h', out.extra='', out.width = "75%", fig.align="center"}
 # Add categorical variable indicating Democratic or Republican
-df_clean <- mutate(df_clean, party_affiliation = ifelse(party == DEMOCRATS, "Democratic Party", "Republican Party"))
 
 # Find average age in each political party
-av_ages <- df_clean %>%
-  group_by(party_affiliation) %>%
-  summarize(av_age = mean(age))
+mean_age <- df %>%
+  group_by(party) %>%
+  summarize(mean_age = mean(age))
 
 # Create density plot showing age distributions of the two parties
-df_clean %>%
-  ggplot() +
-  aes(x = age, color = party_affiliation) +
-  geom_density() + 
-  geom_vline(data = av_ages, aes(xintercept=av_age, 
-                                 color = party_affiliation),
-             linetype = "dashed") +
-  scale_color_manual(values = c("blue2", "red2")) + 
-  labs(title = "Distribution of ages across political parties") +
-  theme_minimal()
+ggplot() +
+  geom_density(
+    data = df, 
+    aes(x = age, color = party)) +
+  geom_vline(
+    data = mean_age, 
+    aes(
+      xintercept = mean_age, 
+      color = party),
+    linetype = "dashed") +
+  scale_color_manual(
+    values = c("blue2", "red2")) + 
+  labs(
+    title = "Distribution of ages across political parties", 
+    color = 'Party Affiliation')
 ```
 
 As a quantitative measure of practical significance, we analyze the correlation.
@@ -151,6 +162,5 @@ indicating that higher values of age tend to correspond to "higher values" of
 political party, or the Republican party as ANES has recorded the data.
 
 ``` {r, echo = FALSE}
-correl <- cor(df_clean$party, df_clean$age)
 ```
 
